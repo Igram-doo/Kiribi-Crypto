@@ -6,6 +6,7 @@
  * @author Michael Sargent
  */
 module rs.igram.kiribi.crypto {
+	requires java.base;
 	requires rs.igram.kiribi.io;
 	exports rs.igram.kiribi.crypto;
 }
