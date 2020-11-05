@@ -22,11 +22,6 @@
  * SOFTWARE.
  */
  
-/**
- * Interface supporting reading and writing of byte arrays.
- *
- * @author Michael Sargent
- */ 
 package rs.igram.kiribi.crypto;
 
 import java.io.IOException;
@@ -44,16 +39,16 @@ import rs.igram.kiribi.io.VarOutput;
 import static rs.igram.kiribi.crypto.Crypto.random;
 
 /**
- * Interface supporting reading and writing of byte arrays.
+ * An instance of this class represents an authentication challenge.
  *
+ * @author Michael Sargent
  */
-final class Challenge implements Encodable {
+public final class Challenge implements Encodable {
 	static final int SIZE = 16;
 	private final byte[] b = new byte[SIZE];
 	
 	/**
-	 * Initializes a newly created <code>VarInputStream</code> object
-	 * so that it reads from the provided <code>VarInput</code>.
+	 * Initializes a newly created <code>Challenge</code> object.
 	 *
 	 */
 	public Challenge() {
@@ -61,21 +56,21 @@ final class Challenge implements Encodable {
 	}
 	
 	/**
-	 * Initializes a newly created <code>VarInputStream</code> object
-	 * so that it reads from the provided <code>VarInput</code>.
+	 * Initializes a newly created <code>Challenge</code> object
+	 * with the provided byte array.
 	 *
-	 * @param bytes The input stream to read from.
+	 * @param bytes The byte array associated with this challenge.
 	 */
 	public Challenge(byte[] bytes) {
 		System.arraycopy(bytes, 0, b, 0, SIZE);
 	}
 		
 	/**
-	 * Initializes a newly created <code>VarInputStream</code> object
+	 * Initializes a newly created <code>Challenge</code> object
 	 * so that it reads from the provided <code>VarInput</code>.
 	 *
 	 * @param in The input stream to read from.
-	 * @throws IOException text
+	 * @throws IOException if there was a problem during initialization.
 	 */
 	public Challenge(VarInput in) throws IOException {
 		in.readFully(b);
@@ -85,11 +80,11 @@ final class Challenge implements Encodable {
 	public void write(VarOutput out) throws IOException {out.write(b);}
 	
 	/**
-	 * Reads a byte array from the stream.
+	 * Verifies this challenge.
 	 *
-	 * @param data text
-	 * @param address text
-	 * @return The byte array read.
+	 * @param data The signed data associated with this challenge.
+	 * @param address The addresses associated with this challenge.
+	 * @return <code>true</code> if this challenge was verified, <code>flase</code> otherise.
 	 */
 	public boolean verify(SignedData data, Address address) {
 		try{
@@ -100,11 +95,11 @@ final class Challenge implements Encodable {
 	}
 	
 	/**
-	 * Reads a byte array from the stream.
+	 * Verifies this challenge.
 	 *
-	 * @param sig text
-	 * @param key text
-	 * @return The byte array read.
+	 * @param sig The signature associated with this challenge.
+	 * @param key The key associated with this challenge.
+	 * @return <code>true</code> if this challenge was verified, <code>flase</code> otherise.
 	 */
 	public boolean verify(Signature sig, Key key) {
 		try{
