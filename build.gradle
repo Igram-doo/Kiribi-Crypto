@@ -7,8 +7,8 @@ repositories {
 }
 	
 dependencies {
-	testImplementation 'junit:junit:4.12'
-   // implementation 'rs.igram.kiribi:kiribi-io:v0.1-beta'
+	testImplementation(platform('org.junit:junit-bom:5.7.0'))
+	testImplementation('org.junit.jupiter:junit-jupiter')
 }
 git {
     implementation 'https://github.com/Igram-doo/Kiribi-IO.git', {
@@ -32,6 +32,13 @@ javadoc {
     options {
     	links = ["https://docs.oracle.com/en/java/javase/15/docs/api/"]
     }
+}
+
+test {
+	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
 }
 
 group = 'rs.igram.kiribi'
