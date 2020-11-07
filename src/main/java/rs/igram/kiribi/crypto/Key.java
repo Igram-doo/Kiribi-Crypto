@@ -228,7 +228,7 @@ public final class Key implements Encodable {
 	 * @param pk text
 	 * @return The byte array read.
 	 */
-	static Key publicKey(byte[] pk) {
+	public static Key publicKey(byte[] pk) {
 		return new Key(pk);
 	}
 			
@@ -238,7 +238,7 @@ public final class Key implements Encodable {
 	 * @param pk text
 	 * @return The byte array read.
 	 */
-	static Key publicKey(String pk) {
+	public static Key publicKey(String pk) {
 		return publicKey(Base64.getUrlDecoder().decode(pk));
 	}
 		
