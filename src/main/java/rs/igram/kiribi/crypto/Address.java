@@ -54,7 +54,7 @@ public final class Address implements Encodable {
 	 *
 	 * @param hash160 The byte array to initialize from.
 	 */
-	Address(byte[] hash160){
+	public Address(byte[] hash160){
 		if(hash160.length != 20) throw new IllegalArgumentException("Input array wrong size: "+hash160.length);
 		bytes = hash160;
 	}
