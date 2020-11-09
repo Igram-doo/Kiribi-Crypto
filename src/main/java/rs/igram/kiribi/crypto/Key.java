@@ -264,7 +264,7 @@ public final class Key implements Encodable {
 	 * <p><b>Note</b>: The newly created <code>Key</code> instance will contain the EC key pair
 	 * an hence can be used to sign data.</p>
 	 *
-	 * @param pk The byte array used to generate this key instance.
+	 * @param encoded The byte array used to generate this key instance.
 	 * @return A new instance of a <code>Key</code>.
 	 */
 	public static Key generate(byte[] encoded) {
