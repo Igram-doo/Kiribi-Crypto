@@ -223,20 +223,24 @@ public final class Key implements Encodable {
 	public String toString() {return Base64.getUrlEncoder().encodeToString(pk);}
 		
 	/**
-	 * Reads a byte array from the stream.
+	 * Creates a new instance of a <code>Key</code>.
 	 *
-	 * @param pk text
-	 * @return The byte array read.
+	 * <p><b>Note</b>: The newly created <code>Key</code> instance will only contain the public key.</p>
+	 *
+	 * @param pk The byte array used to generate this key instance.
+	 * @return A new instance of a <code>Key</code>.
 	 */
 	public static Key publicKey(byte[] pk) {
 		return new Key(pk);
 	}
 			
 	/**
-	 * Reads a byte array from the stream.
+	 * Creates a new instance of a <code>Key</code>.
 	 *
-	 * @param pk text
-	 * @return The byte array read.
+	 * <p><b>Note</b>: The newly created <code>Key</code> instance will only contain the public key.</p>
+	 *
+	 * @param pk The string used to generate this key instance.
+	 * @return A new instance of a <code>Key</code>.
 	 */
 	public static Key publicKey(String pk) {
 		return publicKey(Base64.getUrlDecoder().decode(pk));
@@ -255,12 +259,15 @@ public final class Key implements Encodable {
 	}
 	
 	/**
-	 * Reads a byte array from the stream.
+	 * Creates a new instance of a <code>Key</code>.
 	 *
-	 * @param encoded text
-	 * @return The byte array read.
+	 * <p><b>Note</b>: The newly created <code>Key</code> instance will contain the EC key pair
+	 * an hence can be used to sign data.</p>
+	 *
+	 * @param pk The byte array used to generate this key instance.
+	 * @return A new instance of a <code>Key</code>.
 	 */
-	static Key generate(byte[] encoded) {
+	public static Key generate(byte[] encoded) {
 		return new Key(generateECKeyPair(encoded));
 	}
 }

@@ -85,7 +85,7 @@ final class Crypto {
 		System.out.println(Base64.getEncoder().encodeToString(p.pk));
 	}
 	
-	static byte[] key(byte[] secret, byte[]  iv, int len) {
+	static byte[] key(byte[] secret, byte[] iv, int len) {
 		return spi.key(secret, iv, len);
 	}
 	
