@@ -74,11 +74,11 @@ public final class Address implements Encodable {
 	
 	/**
 	 * Initializes a newly created <code>VarInputStream</code> object
-	 * so that it reads from the provided <code>VarInput</code>.
+	 * from the provided string.
 	 *
-	 * @param s The input stream to read from.
+	 * @param s The string to initialize from.
 	 */
-	Address(String s) {
+	public Address(String s) {
 		this(Base64.getUrlDecoder().decode(s));
 	}
 
