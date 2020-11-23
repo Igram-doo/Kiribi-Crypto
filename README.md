@@ -2,28 +2,31 @@
 Kiribi EC Crypto Module
 
 ### Introduction
-EC Crypto classes and interfaces.
+EC Crypto classes and interfaces based on
+the ***safe*** elliptic curve 25519.
 
 ### Features
-To do
+EC Crypto classes and interfaces based on
+the ***safe*** elliptic curve 25519.
 
 ### Overview
-EC Crypto classes and interfaces.
+EC Crypto classes and interfaces based on
+the ***safe*** elliptic curve 25519.
 
 ##### Keys
-To do
+Public and private keys associated with elliptic curve 25519.
 
 ##### Addresses
-To do
+Addresses encapsulate a crypto-graphic hash of a public key.
 
 ##### Key Exchange
-To do
+Key exchange is the mechanism to securely exchange public keys and generate a shared secret key. The shared secret key utilized by this module is a 128 bit AES key. Once the key exchange is complete, data can be securely transfered between endpoints.
 
 ##### Signatures
-To do
+Signatures are crypto-graphic quantities which can be used to authenticate data. The``Signature``class provided by this module is functionally equivalent to the standard java``Signature``class.
 
 ##### Signed Data
-To do
+Signed data are crypto-graphic quantities which encapsulate data and a signature. The``SignedData``class provided by this module is functionally equivalent to the standard java``SignedData``class.
 
 ### Code Example
 To do
@@ -40,3 +43,6 @@ To do
 
 ### Known Issues
 To do
+
+### To Do
+Keystore support.
