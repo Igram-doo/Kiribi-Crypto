@@ -49,7 +49,6 @@ public final class Challenge implements Encodable {
 	
 	/**
 	 * Initializes a newly created <code>Challenge</code> object.
-	 *
 	 */
 	public Challenge() {
 		random(b);

@@ -90,7 +90,7 @@ public class KeyExchange implements EncodedStream {
 	 *
 	 * <p><b>Note</b>: this method blocks until the key exchange completes or an error is thrown.</p>
 	 *
-	 * @throws IOException If there was a problem reading fromor writing to the underlying 
+	 * @throws IOException if there was a problem reading fromor writing to the underlying 
 	 * <code>VarInputStream</code> during the key exchange.
 	 */
 	public void exchange() throws IOException {
@@ -132,8 +132,8 @@ public class KeyExchange implements EncodedStream {
 	 *
 	 * @param b The byte array to be encrypted.
 	 * @return The encrypted byte array.
-	 * @throws IOException If there was a problem encrypting the byte array.
-	 * @throws IllegalStateException If this method was call before the key exchange was completed.
+	 * @throws IOException if there was a problem encrypting the byte array.
+	 * @throws IllegalStateException if this method was call before the key exchange was completed.
 	 */
 	public byte[] encrypt(byte[] b) throws IOException {
 		if (encrypter == null) throw new IllegalStateException("Key exchange not complete");
@@ -157,8 +157,8 @@ public class KeyExchange implements EncodedStream {
 	 *
 	 * @param b The byte array to be decrypted.
 	 * @return The decrypted byte array.
-	 * @throws IOException If there was a problem decrypting the byte array.
-	 * @throws IllegalStateException If this method was call before the key exchange was completed.
+	 * @throws IOException if there was a problem decrypting the byte array.
+	 * @throws IllegalStateException if this method was call before the key exchange was completed.
 	 */
 	public byte[] decrypt(byte[] b) throws IOException {
 		if (decrypter == null) throw new IllegalStateException("Key exchange not complete");
@@ -177,8 +177,8 @@ public class KeyExchange implements EncodedStream {
 	 * Writes an encodable object.
 	 *
 	 * @param data The encodable object to write.
-	 * @throws IOException If there was a problem writing the data.
-	 * @throws IllegalStateException If this method was call before the key exchange was completed.
+	 * @throws IOException if there was a problem writing the data.
+	 * @throws IllegalStateException if this method was call before the key exchange was completed.
 	 */	
 	@Override
 	public void write(Encodable data) throws IOException {
@@ -193,7 +193,7 @@ public class KeyExchange implements EncodedStream {
 	 * @param <T> The type of the object to decode.
 	 * @param decoder The decoder used to decode the object.
 	 * @return The decoded object.
-	 * @throws IllegalStateException If this method was call before the key exchange was completed.
+	 * @throws IllegalStateException if this method was call before the key exchange was completed.
 	 */
 	@Override
 	public <T> T read(Decoder<T> decoder) throws IOException {

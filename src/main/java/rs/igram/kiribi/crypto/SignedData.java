@@ -61,7 +61,7 @@ public final class SignedData implements Encodable {
 	 * so that it reads from the provided <code>VarInput</code>.
 	 *
 	 * @param in The input stream to read from.
-	 * @throws IOException If there was a problem reading from the provided 
+	 * @throws IOException if there was a problem reading from the provided 
 	 * <code>VarInputStream</code>.
 	 */
 	public SignedData(VarInput in) throws IOException {
@@ -90,7 +90,7 @@ public final class SignedData implements Encodable {
 	 * @param <T> The type of the data object.
 	 * @param decoder The <code>Decoder</code> used to decode the data object.
 	 * @return The decoded data object.
-	 * @throws IOException If there was a problem decoding the data object.
+	 * @throws IOException if there was a problem decoding the data object.
 	 */
 	public <T> T data(Decoder<T> decoder) throws IOException {
 		return decoder.decode(data);
@@ -117,7 +117,7 @@ public final class SignedData implements Encodable {
 	 * Verifies the validity of this signed object.
 	 *
 	 * @return <code>true</code> if this signed object is valid; <code>false</code> otherwise.
-	 * @throws IOException If there was a problem verifying this signed data object.
+	 * @throws IOException if there was a problem verifying this signed data object.
 	 */
 	public boolean verify() throws IOException {
 		return Crypto.verify(signature, data, pk);

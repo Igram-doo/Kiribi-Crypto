@@ -57,7 +57,7 @@ public final class Key implements Encodable {
 	 * so that it reads from the provided <code>VarInput</code>.
 	 *
 	 * @param in The input stream to read from.
-	 * @throws IOException If there was a problem reading from the provided 
+	 * @throws IOException if there was a problem reading from the provided 
 	 * <code>VarInputStream</code>.
 	 */
 	public Key(VarInput in) throws IOException {
@@ -139,8 +139,8 @@ public final class Key implements Encodable {
 	 * Returns a <code>SignedData</code> object representing this <code>Key</code> object.
 	 *
 	 * @return Return a <code>SignedData</code> object representing this <code>Key</code> object.
-	 * @throws IOException If there was a problem signing this key.
-	 * @throws IllegalStateException If this key is a public key.
+	 * @throws IOException if there was a problem signing this key.
+	 * @throws IllegalStateException if this key is a public key.
 	 */
 	public SignedData signedKey() throws IOException {
 		if (pair == null) throw new IllegalStateException("Key is public");
@@ -154,8 +154,8 @@ public final class Key implements Encodable {
 	 * @param data The byte array to be signed.
 	 * @return Returns a <code>SignedData</code> object associated with the provided byte array and
 	 * this <code>Key</code> object.
-	 * @throws IOException If there was a problem signing the provided byte array.
-	 * @throws IllegalStateException If this key is a public key.
+	 * @throws IOException if there was a problem signing the provided byte array.
+	 * @throws IllegalStateException if this key is a public key.
 	 */
 	public SignedData signData(byte[] data) throws IOException {
 		if (pair == null) throw new IllegalStateException("Key is public");
@@ -169,8 +169,8 @@ public final class Key implements Encodable {
 	 * @param data The byte array for which the signature is to be generated.
 	 * @return Returns a <code>Signature</code> object associated with the provided byte array and
 	 * this <code>Key</code> object.
-	 * @throws IOException If there was a problem generating the signature from the provided byte array.
-	 * @throws IllegalStateException If this key is a public key.
+	 * @throws IOException if there was a problem generating the signature from the provided byte array.
+	 * @throws IllegalStateException if this key is a public key.
 	 */
 	public Signature sign(byte[] data) throws IOException {
 		if (pair == null) throw new IllegalStateException("Key is public");
@@ -184,7 +184,7 @@ public final class Key implements Encodable {
 	 * @param data The byte array associated with this key and provided signature.
 	 * @return <code>true</code> if the provided signature is associated with the provide byte array
 	 * and this key, <code>false</code> otherwise. .
-	 * @throws IOException If there was a problem verifying the provided byte array.
+	 * @throws IOException if there was a problem verifying the provided byte array.
 	 */
 	public boolean verify(Signature signature, byte[] data) throws IOException {
 		return signature.verify(data, pk);
@@ -197,7 +197,7 @@ public final class Key implements Encodable {
 	 * @param data The byte array associated with this key and provided signed data.
 	 * @return <code>true</code> if the provided signed data and byte array are associated with 
 	 * this key, <code>false</code> otherwise. .
-	 * @throws IOException If there was a problem verifying the provided signed data and byte array.
+	 * @throws IOException if there was a problem verifying the provided signed data and byte array.
 	 */
 	public boolean verify(SignedData signed, byte[] data) throws IOException {
 		return Arrays.equals(pk, signed.key()) 

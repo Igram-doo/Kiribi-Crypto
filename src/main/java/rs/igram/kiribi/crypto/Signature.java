@@ -48,7 +48,7 @@ public final class Signature implements Encodable {
 	 * so that it reads from the provided <code>VarInput</code>.
 	 *
 	 * @param in The input stream to read from.
-	 * @throws IOException If there was a problem reading from the provided 
+	 * @throws IOException if there was a problem reading from the provided 
 	 * <code>VarInputStream</code>.
 	 */
 	public Signature(VarInput in) throws IOException {
