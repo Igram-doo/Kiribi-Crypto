@@ -33,8 +33,9 @@ import rs.igram.kiribi.io.VarInput;
 import rs.igram.kiribi.io.VarOutput;
 
 /**
- * An instance of this class represents an "Address" associated with a public key.
+ * An instance of this class encapsulates a cryptographic hash of a public key.
  *
+ * @see Key
  * @author Michael Sargent
  */
 public final class Address implements Encodable {
@@ -44,13 +45,21 @@ public final class Address implements Encodable {
 	public static final Address NULL = new Address(new byte[20]);
 	
 	/**
-	 * text
+	 * The hash of the associated key's data.
 	 */
 	final byte[] bytes;
 	
 	/**
-	 * Initializes a newly created <code>Address</code> object
-	 * with a byte array.
+	 * Initializes a newly created <code>Address</code> object from
+	 * the provided byte array.
+	 *
+	 * <p>The byte array must be of length 20. Note that the following will hold:
+	 * <pre>
+	 * Address address1 = ...
+	 * byte[] b = address toByteArray();
+	 * Address address2 = new Address(b);
+	 * address1.equals(address2) == true;
+	 * </pre>
 	 *
 	 * @param hash The byte array to initialize from.
 	 */
@@ -73,10 +82,19 @@ public final class Address implements Encodable {
 	}
 	
 	/**
-	 * Initializes a newly created <code>VarInputStream</code> object
+	 * Initializes a newly created <code>Address</code> object
 	 * from the provided string.
 	 *
-	 * @param s The string to initialize from.
+	 * <p>Note that the following will hold:
+	 * <pre>
+	 * Address address1 = ...
+	 * String s = address toString();
+	 * Address address2 = new Address(s);
+	 * address1.equals(address2) == true;
+	 * </pre>
+	 *
+	 * @param s The base 64 encoding of the hash of the associated key's data.
+	 * @see #toString
 	 */
 	public Address(String s) {
 		this(Base64.getUrlDecoder().decode(s));
@@ -87,6 +105,13 @@ public final class Address implements Encodable {
 		out.write(bytes);
 	}
 		
+	
+	/**
+	 * Returns the base 64 encoding of the hash of the associated key's data.
+	 *
+	 * @return The base 64 encoding of the hash of the associated key's data.
+	 * @see #Address(String)
+	 */
 	@Override
 	public String toString() {return Base64.getUrlEncoder().encodeToString(bytes);}
 

@@ -39,6 +39,8 @@ import static rs.igram.kiribi.crypto.Hash.sha256;
 /**
  * An instance of this class represents signed data.
  *
+ * @see Key#signData
+ * @see Key#verify​(SignedData, byte[])
  * @author Michael Sargent
  */
 public final class SignedData implements Encodable {

@@ -34,6 +34,8 @@ import rs.igram.kiribi.io.VarOutput;
 /**
  * An instance of this class represents a digital signature.
  *
+ * @see Key#sign
+ * @see Key#verify​(Signature, byte[])
  * @author Michael Sargent
  */
 public final class Signature implements Encodable {

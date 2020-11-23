@@ -40,10 +40,13 @@ import static rs.igram.kiribi.crypto.Hash.sha256;
 /**
  * An instance of this class represents an EC key.
  *
+ * @see Address
+ * @see Signature
+ * @see SignedData
  * @author Michael Sargent
  */
 public final class Key implements Encodable {
-	// 160 hash of public key
+	// hash of public key
 	private final byte[] hash;
 	// public key
 	private final byte[] pk;
