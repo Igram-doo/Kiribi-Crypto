@@ -53,11 +53,11 @@ import static javax.crypto.Cipher.*;
 import static rs.igram.kiribi.crypto.Crypto.Cipher;
 import static rs.igram.kiribi.crypto.Crypto.ECKeyPair;
 import static rs.igram.kiribi.crypto.Hash.sha256;
-import static rs.igram.kiribi.crypto.ByteUtils.bytes;
-import static rs.igram.kiribi.crypto.ByteUtils.concat;
-import static rs.igram.kiribi.crypto.ByteUtils.crop;
-import static rs.igram.kiribi.crypto.ByteUtils.extract;
-import static rs.igram.kiribi.crypto.ByteUtils.xor;
+import static rs.igram.kiribi.io.ByteUtils.bytes;
+import static rs.igram.kiribi.io.ByteUtils.concat;
+import static rs.igram.kiribi.io.ByteUtils.crop;
+import static rs.igram.kiribi.io.ByteUtils.extract;
+import static rs.igram.kiribi.io.ByteUtils.xor;
 
 /**
  * Package private class.

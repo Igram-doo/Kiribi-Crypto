@@ -52,11 +52,11 @@ public final class Address implements Encodable {
 	 * Initializes a newly created <code>Address</code> object
 	 * with a byte array.
 	 *
-	 * @param hash160 The byte array to initialize from.
+	 * @param hash The byte array to initialize from.
 	 */
-	public Address(byte[] hash160){
-		if(hash160.length != 20) throw new IllegalArgumentException("Input array wrong size: "+hash160.length);
-		bytes = hash160;
+	public Address(byte[] hash){
+		if(hash.length != 20) throw new IllegalArgumentException("Input array wrong size: "+hash.length);
+		bytes = hash;
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public final class Address implements Encodable {
 	 * so that it reads from the provided <code>VarInput</code>.
 	 *
 	 * @param in The input stream to read from.
-	 * @throws IOException If there was a problem reading from the provided 
+	 * @throws IOException if there was a problem reading from the provided 
 	 * <code>VarInputStream</code>.
 	 */
 	public Address(VarInput in) throws IOException {

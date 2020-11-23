@@ -32,6 +32,7 @@ import java.util.Arrays;
 
 import static java.nio.file.StandardOpenOption.*;
 
+import static rs.igram.kiribi.io.ByteUtils.bytes;
 import static rs.igram.kiribi.crypto.Crypto.Cipher;
 import static rs.igram.kiribi.crypto.Hash.sha256;
 
@@ -42,7 +43,7 @@ import static rs.igram.kiribi.crypto.Hash.sha256;
  */
 class Crypter {
 	// iv
-	private static final byte[] v = ByteUtils.bytes(1725714613,1062313406);
+	private static final byte[] v = bytes(1725714613,1062313406);
 	
 	private final Cipher encrypter;
 	private final Cipher decrypter;
@@ -57,7 +58,7 @@ class Crypter {
 	 * @throws IOException text
 	 */
 	public Crypter(Path path, char[] pass) throws GeneralSecurityException, IOException {
-		byte[] secret = sha256(sha256(ByteUtils.bytes(pass)));
+		byte[] secret = sha256(sha256(bytes(pass)));
 		byte[] hash = sha256(sha256(secret));
 		
 		if(Files.exists(path)){

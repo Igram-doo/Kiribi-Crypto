@@ -80,7 +80,7 @@ final class Crypto {
 	 */
 	public static void gen() {
 		ECKeyPair p = generateECKeyPair();
-		int[] e = rs.igram.kiribi.crypto.ByteUtils.ints(p.encoded);
+		int[] e = rs.igram.kiribi.io.ByteUtils.ints(p.encoded);
 		for(int i = 0; i < e.length; i++) System.out.println(""+e[i]);
 		System.out.println(Base64.getEncoder().encodeToString(p.pk));
 	}
