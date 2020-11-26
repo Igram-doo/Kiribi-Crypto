@@ -41,6 +41,15 @@ public class KeyTest {
 	}
 
 	@Test
+	public void testAddress() throws IOException {
+		KeyPair pair = Key.generateKeyPair();
+		Key.Public publicKey = (Key.Public)pair.getPublic();
+		Key.Private privateKey = (Key.Private)pair.getPrivate();
+		
+		assertEquals(publicKey.address(), privateKey.address());
+	}
+
+	@Test
 	public void testVerifySignature() throws IOException {
 		byte[] b = new byte[1000];
 		random(b);

@@ -549,6 +549,17 @@ public final class Key implements Encodable {
 			return Crypto.sign(pair(), data);
 		}
 
+		/**
+		 * Return the <code>Address</code> associated with this private key's public key.
+		 *
+		 * @return Returns the <code>Address</code> associated with this private key's public key.
+		 */
+		public Address address() {
+			byte[] pk = pair().pk;
+			byte[] hash = ripemd160(sha256(pk));
+			return new Address(hash);
+		}
+		
 		private ECKeyPair pair() {
 			if (pair == null) {
 				pair = generateECKeyPair(material);
