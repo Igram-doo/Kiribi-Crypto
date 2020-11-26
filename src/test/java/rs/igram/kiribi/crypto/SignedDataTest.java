@@ -25,27 +25,21 @@
 package rs.igram.kiribi.crypto;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
+import java.security.KeyPair;
 import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import rs.igram.kiribi.io.*;
 
 public class SignedDataTest {
 	static final SecureRandom random = new SecureRandom();
 	
-	public static void random(byte[] bytes) {
+	static void random(byte[] bytes) {
 		random.nextBytes(bytes);
 	}
 
@@ -59,10 +53,20 @@ public class SignedDataTest {
 
 	@Test
 	public void testVerify() throws IOException {
-		Key k = Key.generate();
 		TestEncodable t = new TestEncodable();	
+		
+		// depreated
+		Key k = Key.generate();
 		SignedData s = k.signData(t.encode());
 		assertTrue(s.verify());
+		
+		// new
+		KeyPair pair = Key.generateKeyPair();
+		Key.Public publicKey = (Key.Public)pair.getPublic();
+		Key.Private privateKey = (Key.Private)pair.getPrivate();
+		s = privateKey.signData(t.encode());
+		assertTrue(s.verify());
+		
    }
     
    private static class TestEncodable implements Encodable {
@@ -89,6 +93,7 @@ public class SignedDataTest {
    	   
    	   @Override
    	   public int hashCode() {return (int)l;}
+   	   
    	   @Override
    	   public boolean equals(Object o) {
    	   	   if(o == null || !(o instanceof TestEncodable)) return false;

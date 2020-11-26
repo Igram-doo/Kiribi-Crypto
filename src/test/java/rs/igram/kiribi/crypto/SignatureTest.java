@@ -25,42 +25,49 @@
 package rs.igram.kiribi.crypto;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
+import java.security.KeyPair;
 import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
-import rs.igram.kiribi.io.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SignatureTest {
 	static final SecureRandom random = new SecureRandom();
 	
-	public static void random(byte[] bytes) {
+	static void random(byte[] bytes) {
 		random.nextBytes(bytes);
 	}
 
 	@Test
 	public void testVerify() throws IOException {
-		Key k1 = Key.generate();
-		Key k2 = Key.generate();
 		byte[] b1 = new byte[1000];
 		random(b1);
 		byte[] b2 = new byte[1000];
 		random(b2);
+		
+		Key k1 = Key.generate();
+		Key k2 = Key.generate();
 		Signature s1 = k1.sign(b1);
 		Signature s2 = k2.sign(b2);
    	   
 		assertTrue(s1.verify(b1, k1.pk()));
 		assertFalse(s1.verify(b1, k2.pk()));
+				
+		// new
+		KeyPair pair1 = Key.generateKeyPair();
+		Key.Public publicKey1 = (Key.Public)pair1.getPublic();
+		Key.Private privateKey1 = (Key.Private)pair1.getPrivate();
+		
+		KeyPair pair2 = Key.generateKeyPair();
+		Key.Public publicKey2 = (Key.Public)pair2.getPublic();
+		Key.Private privateKey2 = (Key.Private)pair2.getPrivate();
+		
+		s1 = privateKey1.sign(b1);
+		s2 = privateKey2.sign(b2);
+		assertTrue(s1.verify(b1, publicKey1));
+		assertFalse(s1.verify(b1, publicKey2));
+
 	}
 }

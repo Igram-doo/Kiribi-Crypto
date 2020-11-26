@@ -25,6 +25,7 @@
 package rs.igram.kiribi.crypto;
 
 import java.io.IOException;
+import java.security.PublicKey;
 import java.util.Arrays;
 
 import rs.igram.kiribi.io.Decoder;
@@ -101,9 +102,18 @@ public final class SignedData implements Encodable {
 	/**
 	 * The public key associated with this signed object.
 	 *
+	 * @deprecated Use {@link #getPublicKey()}
 	 * @return The public key associated with this signed object.
 	 */
+	@Deprecated
 	public byte[] key() {return pk;}
+		
+	/**
+	 * The public key associated with this signed object.
+	 *
+	 * @return The public key associated with this signed object.
+	 */
+	public PublicKey getPublicKey() {return new Key.Public(pk);}
 	
 	/**
 	 * The <code>Address</code> associated with this signed object.

@@ -25,6 +25,7 @@
 package rs.igram.kiribi.crypto;
 
 import java.io.IOException;
+import java.security.PublicKey;
 import java.util.Arrays;
 
 import rs.igram.kiribi.io.Encodable;
@@ -60,13 +61,31 @@ public final class Signature implements Encodable {
 	/**
 	 * Verifies if this signature is associated with the provided byte array and public key.
 	 *
+	 * @deprecated Use {@link #verify(byte[], PublicKey)}
 	 * @param data The byte array associated with this signature.
 	 * @param pk The public key associated with this signature.
 	 * @return <code>true</code> if this signature is associated with the provide byte array
 	 * and public key, <code>false</code> otherwise. .
 	 */
+	@Deprecated
 	public boolean verify(byte[] data, byte[] pk) {
 		return Crypto.verify(this, data, pk);
+	}
+		
+	/**
+	 * Verifies if this signature is associated with the provided byte array and public key.
+	 *
+	 * @param data The byte array associated with this signature.
+	 * @param key The public key associated with this signature.
+	 * @return <code>true</code> if this signature is associated with the provide byte array
+	 * and public key, <code>false</code> otherwise. .
+	 */
+	public boolean verify(byte[] data, PublicKey key) {
+		if (key instanceof Key.Public) {
+			return Crypto.verify(this, data, ((Key.Public)key).material);
+		} else {
+			return false;
+		}
 	}
 	
 	@Override

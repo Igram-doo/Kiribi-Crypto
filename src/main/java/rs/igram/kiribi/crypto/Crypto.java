@@ -24,6 +24,7 @@
  
 package rs.igram.kiribi.crypto;
 
+import java.security.KeyPair;
 import java.security.SecureRandom;
 import java.security.GeneralSecurityException;
 import java.util.Base64;
@@ -128,6 +129,10 @@ final class Crypto {
 		ECKeyPair(byte[] pk, byte[] encoded) {
 			this.pk = pk;
 			this.encoded = encoded;
+		}
+		
+		KeyPair toKeyPair() {
+			return new KeyPair(new Key.Public(pk), new Key.Private(encoded));
 		}
 	}
 	

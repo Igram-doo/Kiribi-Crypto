@@ -25,59 +25,55 @@
 package rs.igram.kiribi.crypto;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
+import java.security.KeyPair;
 import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-
-import rs.igram.kiribi.io.*;
 
 public class KeyTest {
 	static final SecureRandom random = new SecureRandom();
 	
-	public static void random(byte[] bytes) {
+	static void random(byte[] bytes) {
 		random.nextBytes(bytes);
-	}
-
-	public static int random(int bound) {
-		return random.nextInt(bound);
-	}
-
-	public static long random() {
-		return random.nextLong();
 	}
 
 	@Test
 	public void testVerifySignature() throws IOException {
-		Key k = Key.generate();
 		byte[] b = new byte[1000];
 		random(b);
+		
+		// depreacted
+		Key k = Key.generate();
 		Signature s = k.sign(b);
-   	   
 		assertTrue(k.verify(s,b));
+		
+		// new
+		KeyPair pair = Key.generateKeyPair();
+		Key.Public publicKey = (Key.Public)pair.getPublic();
+		Key.Private privateKey = (Key.Private)pair.getPrivate();
+		s = privateKey.sign(b);
+		assertTrue(publicKey.verify(s,b));
 	}
 
 	@Test
 	public void testVerifySignedData() throws IOException {
-		Key k = Key.generate();
 		byte[] b = new byte[1000];
 		random(b);
+		
+		// depreacted
+		Key k = Key.generate();
 		SignedData d = k.signData(b);
-   	   
 		assertTrue(k.verify(d,b));
+					
+		// new
+		KeyPair pair = Key.generateKeyPair();
+		Key.Public publicKey = (Key.Public)pair.getPublic();
+		Key.Private privateKey = (Key.Private)pair.getPrivate();
+		d = privateKey.signData(b);
+		assertTrue(publicKey.verify(d,b));
+
 	}
-   
-   private static VarInputStream in(VarOutputStream out) {
-   	   return new VarInputStream(out.toByteArray());
-   }
 }
