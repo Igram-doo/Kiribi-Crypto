@@ -97,23 +97,6 @@ public final class Challenge implements Encodable {
 	/**
 	 * Verifies this challenge.
 	 *
-	 * @deprecated Use {@link #verify(Signature, PublicKey)}
-	 * @param sig The signature associated with this challenge.
-	 * @param key The key associated with this challenge.
-	 * @return <code>true</code> if this challenge was verified, <code>flase</code> otherise.
-	 */
-	@Deprecated 
-	public boolean verify(Signature sig, Key key) {
-		try{
-			return key.verify(sig, b);
-		}catch(IOException e){
-			return false;
-		}
-	}
-	
-	/**
-	 * Verifies this challenge.
-	 *
 	 * @param sig The signature associated with this challenge.
 	 * @param key The public key associated with this challenge.
 	 * @return <code>true</code> if this challenge was verified, <code>flase</code> otherise.

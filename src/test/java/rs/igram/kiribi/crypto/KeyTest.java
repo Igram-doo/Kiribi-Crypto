@@ -53,17 +53,17 @@ public class KeyTest {
 	public void testVerifySignature() throws IOException {
 		byte[] b = new byte[1000];
 		random(b);
-		
+		/*
 		// depreacted
 		Key k = Key.generate();
 		Signature s = k.sign(b);
 		assertTrue(k.verify(s,b));
-		
+		*/
 		// new
 		KeyPair pair = Key.generateKeyPair();
 		Key.Public publicKey = (Key.Public)pair.getPublic();
 		Key.Private privateKey = (Key.Private)pair.getPrivate();
-		s = privateKey.sign(b);
+		Signature s = privateKey.sign(b);
 		assertTrue(publicKey.verify(s,b));
 	}
 
@@ -71,17 +71,17 @@ public class KeyTest {
 	public void testVerifySignedData() throws IOException {
 		byte[] b = new byte[1000];
 		random(b);
-		
+		/*
 		// depreacted
 		Key k = Key.generate();
 		SignedData d = k.signData(b);
 		assertTrue(k.verify(d,b));
-					
+			*/		
 		// new
 		KeyPair pair = Key.generateKeyPair();
 		Key.Public publicKey = (Key.Public)pair.getPublic();
 		Key.Private privateKey = (Key.Private)pair.getPrivate();
-		d = privateKey.signData(b);
+		SignedData d = privateKey.signData(b);
 		assertTrue(publicKey.verify(d,b));
 
 	}

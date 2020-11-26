@@ -35,8 +35,8 @@ import rs.igram.kiribi.io.VarOutput;
 /**
  * An instance of this class represents a digital signature.
  *
- * @see Key#sign
- * @see Key#verify​(Signature, byte[])
+ * @see Key.Private#sign
+ * @see Key.Public#verify​(Signature, byte[])
  * @author Michael Sargent
  */
 public final class Signature implements Encodable {
@@ -56,20 +56,6 @@ public final class Signature implements Encodable {
 	 */
 	public Signature(VarInput in) throws IOException {
 		data = in.readBytes();
-	}
-		
-	/**
-	 * Verifies if this signature is associated with the provided byte array and public key.
-	 *
-	 * @deprecated Use {@link #verify(byte[], PublicKey)}
-	 * @param data The byte array associated with this signature.
-	 * @param pk The public key associated with this signature.
-	 * @return <code>true</code> if this signature is associated with the provide byte array
-	 * and public key, <code>false</code> otherwise. .
-	 */
-	@Deprecated
-	public boolean verify(byte[] data, byte[] pk) {
-		return Crypto.verify(this, data, pk);
 	}
 		
 	/**

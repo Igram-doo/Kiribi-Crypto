@@ -41,268 +41,15 @@ import static rs.igram.kiribi.crypto.Hash.ripemd160;
 import static rs.igram.kiribi.crypto.Hash.sha256;
 
 /**
- * An instance of this class represents an EC key.
+ * Provides a generator for EC 25519  key pairs.
  *
  * @see Address
  * @see Signature
  * @see SignedData
  * @author Michael Sargent
  */
-public final class Key implements Encodable {
-	// hash of public key
-	private final byte[] hash;
-	// public key
-	private final byte[] pk;
-	// key encoding (private key for bouncy castle) - null if public key
-	private final byte[] encoded;
-	// associated key - null if public key
-	private final ECKeyPair pair;
-	
-	/**
-	 * Initializes a newly created <code>Key</code> object
-	 * so that it reads from the provided <code>VarInput</code>.
-	 *
-	 * @param in The input stream to read from.
-	 * @throws IOException if there was a problem reading from the provided 
-	 * <code>VarInputStream</code>.
-	 */
-	@Deprecated 
-	public Key(VarInput in) throws IOException {
-		boolean isPublic = in.readBoolean();
-		byte[] data = in.readBytes();
-		if(isPublic){
-			pk = data;
-			encoded = null;
-			pair = null;
-		}else{
-			encoded = data;
-			pair = generateECKeyPair(encoded);
-			pk =  pair.pk;
-		}
-		hash = ripemd160(sha256(pk));
-	}
-
-	private Key(byte[] pk){
-		this.pk = pk;
-		encoded = null;
-		pair = null;
-		hash = ripemd160(sha256(pk));
-	}
-		
-	private Key(ECKeyPair pair){
-		this.pair = pair;
-
-		pk = pair.pk;
-		encoded = pair.encoded;
-		hash = ripemd160(sha256(pk));
-	}
-	
-	@Deprecated 
-	@Override
-	public void write(VarOutput out) throws IOException {
-		out.writeBoolean(isPublic());
-		byte[] data = isPublic() ? pk : encoded;
-		out.writeBytes(data);
-	}
-	
-	/**
-	 * Returns the byte array of the EC public key associated with this <code>Key</code> object.
-	 *
-	 * @return Returns the byte array of the EC public key associated with this <code>Key</code> object.
-	 */	
-	@Deprecated 
-	public byte[] pk() {
-		byte[] b = new byte[pk.length];
-		System.arraycopy(pk, 0, b, 0, pk.length);
-		return b;
-	}
-	
-	/**
-	 * Returns the EC public key associated with this <code>Key</code> object.
-	 *
-	 * @return Returns the EC public key associated with this <code>Key</code> object.
-	 */	
-	@Deprecated 
-	public Key pub() {
-		return isPublic() ? this : new Key(pk);
-	}
-		
-	/**
-	 * Returns the <code>Address</code> of the EC public key associated with this 
-	 * <code>Key</code> object.
-	 *
-	 * @deprecated Use {@link Key.Public#address()}
-	 * @return Returns the <code>Address</code> of the EC public key associated with this 
-	 * <code>Key</code> object.
-	 */
-	@Deprecated 
-	public Address address() {
-		return new Address(hash);
-	}
-	
-	/**
-	 * Indicates whether this <code>Key</code> object only contains a public EC key.
-	 *
-	 * @return The byte array read.
-	 */
-	@Deprecated 
-	public boolean isPublic() {return encoded == null;}
-			
-	/**
-	 * Returns a <code>SignedData</code> object representing this <code>Key</code> object.
-	 *
-	 * @deprecated Use {@link Key.Private#signedKey()}
-	 * @return Return a <code>SignedData</code> object representing this <code>Key</code> object.
-	 * @throws IOException if there was a problem signing this key.
-	 * @throws IllegalStateException if this key is a public key.
-	 */
-	@Deprecated 
-	public SignedData signedKey() throws IOException {
-		if (pair == null) throw new IllegalStateException("Key is public");
-		return new SignedData(pair, hash);
-	}
-	
-	/**
-	 * Returns a <code>SignedData</code> object associated with the provided byte array and
-	 * this <code>Key</code> object.
-	 *
-	 * @deprecated Use {@link Key.Private#signData(byte[])}
-	 * @param data The byte array to be signed.
-	 * @return Returns a <code>SignedData</code> object associated with the provided byte array and
-	 * this <code>Key</code> object.
-	 * @throws IOException if there was a problem signing the provided byte array.
-	 * @throws IllegalStateException if this key is a public key.
-	 */
-	@Deprecated 
-	public SignedData signData(byte[] data) throws IOException {
-		if (pair == null) throw new IllegalStateException("Key is public");
-		return new SignedData(pair, data);
-	}
-	
-	/**
-	 * Returns a <code>Signature</code> object associated with the provided byte array and
-	 * this <code>Key</code> object.
-	 *
-	 * @deprecated Use {@link Key.Private#sign(byte[])}
-	 * @param data The byte array for which the signature is to be generated.
-	 * @return Returns a <code>Signature</code> object associated with the provided byte array and
-	 * this <code>Key</code> object.
-	 * @throws IOException if there was a problem generating the signature from the provided byte array.
-	 * @throws IllegalStateException if this key is a public key.
-	 */
-	@Deprecated 
-	public Signature sign(byte[] data) throws IOException {
-		if (pair == null) throw new IllegalStateException("Key is public");
-		return Crypto.sign(pair, data);
-	}
-	
-	/**
-	 * Verifies if the provided signature is associated with the provided byte array and this key.
-	 *
-	 * @deprecated Use {@link Key.Public#verify(Signature, byte[])}
-	 * @param signature The signature associated with this key and provided byte array.
-	 * @param data The byte array associated with this key and provided signature.
-	 * @return <code>true</code> if the provided signature is associated with the provide byte array
-	 * and this key, <code>false</code> otherwise. .
-	 * @throws IOException if there was a problem verifying the provided byte array.
-	 */
-	@Deprecated 
-	public boolean verify(Signature signature, byte[] data) throws IOException {
-		return signature.verify(data, pk);
-	}
-
-	/**
-	 * Verifies if the provided signed object is associated with the provided byte array and this key.
-	 *
-	 * @deprecated Use {@link Key.Public#verify(SignedData, byte[])}
-	 * @param signed The signed data associated with this key and provided byte array.
-	 * @param data The byte array associated with this key and provided signed data.
-	 * @return <code>true</code> if the provided signed data and byte array are associated with 
-	 * this key, <code>false</code> otherwise. .
-	 * @throws IOException if there was a problem verifying the provided signed data and byte array.
-	 */
-	@Deprecated 
-	public boolean verify(SignedData signed, byte[] data) throws IOException {
-		return Arrays.equals(pk, signed.key()) 
-			&& Arrays.equals(data, signed.data()) 
-			&& signed.verify();
-	}
-
-	@Deprecated 
-	@Override
-	public boolean equals(Object o){
-		if(this == o) return true;
-		if(o != null && o.getClass() == Key.class){
-			Key k = (Key)o;
-			return isPublic() == k.isPublic() 
-				&& isPublic() ? Arrays.equals(pk, k.pk) : pair.equals(k.pair);
-		}
-		return false;
-	}
-
-	@Deprecated 
-	@Override
-	public int hashCode() {return Arrays.hashCode(pk);}
-
-	@Deprecated 
-	@Override
-	public String toString() {return Base64.getUrlEncoder().encodeToString(pk);}
-		
-	/**
-	 * Creates a new instance of a <code>Key</code>.
-	 *
-	 * <p><b>Note</b>: The newly created <code>Key</code> instance will only contain the public key.</p>
-	 *
-	 * @param pk The byte array used to generate this key instance.
-	 * @return A new instance of a <code>Key</code>.
-	 */
-	@Deprecated 
-	public static Key publicKey(byte[] pk) {
-		return new Key(pk);
-	}
-			
-	/**
-	 * Creates a new instance of a <code>Key</code>.
-	 *
-	 * <p><b>Note</b>: The newly created <code>Key</code> instance will only contain the public key.</p>
-	 *
-	 * @deprecated Use {@link Key.Public#Public(String)}
-	 * @param pk The string used to generate this key instance.
-	 * @return A new instance of a <code>Key</code>.
-	 */
-	@Deprecated 
-	public static Key publicKey(String pk) {
-		return publicKey(Base64.getUrlDecoder().decode(pk));
-	}
-		
-	/**
-	 * Creates a new instance of a <code>Key</code>.
-	 *
-	 * <p><b>Note</b>: The newly created <code>Key</code> instance will contain the EC key pair
-	 * an hence can be used to sign data.</p>
-	 *
-	 * @deprecated Use {@link #generateKeyPair()}
-	 * @return A new instance of a <code>Key</code>.
-	 */
-	@Deprecated 
-	public static Key generate() {
-		return new Key(generateECKeyPair());
-	}
-	
-	/**
-	 * Creates a new instance of a <code>Key</code>.
-	 *
-	 * <p><b>Note</b>: The newly created <code>Key</code> instance will contain the EC key pair
-	 * an hence can be used to sign data.</p>
-	 *
-	 * @deprecated Use {@link Key.Private#Private(byte[])}
-	 * @param encoded The byte array used to generate this key instance.
-	 * @return A new instance of a <code>Key</code>.
-	 */
-	@Deprecated 
-	public static Key generate(byte[] encoded) {
-		return new Key(generateECKeyPair(encoded));
-	}
+public final class Key {
+	private Key() {}
 			
 	/**
 	 * Creates a new instance of a <code>KeyPair</code>.
@@ -315,6 +62,7 @@ public final class Key implements Encodable {
 	public static KeyPair generateKeyPair() {
 		return generateECKeyPair().toKeyPair();
 	}
+	
 	static void checkType(KeyPair pair) throws IllegalArgumentException {
 		if (!(pair.getPublic() instanceof Key.Public) || !(pair.getPrivate() instanceof Key.Private)) {
 			throw new IllegalArgumentException("Illegal Key type");
@@ -431,7 +179,7 @@ public final class Key implements Encodable {
 		 * @throws IOException if there was a problem verifying the provided byte array.
 		 */
 		public boolean verify(Signature signature, byte[] data) throws IOException {
-		 	return signature.verify(data, material);
+		 	return signature.verify(data, this);
 		}
 
 		 /**
@@ -444,7 +192,7 @@ public final class Key implements Encodable {
 		  * @throws IOException if there was a problem verifying the provided signed data and byte array.
 		  */
 		 public boolean verify(SignedData signed, byte[] data) throws IOException {
-		 	 return Arrays.equals(material, signed.key()) 
+		 	 return Arrays.equals(material, signed.getPublicKey().getEncoded()) 
 		  	 && Arrays.equals(data, signed.data()) 
 		  	 && signed.verify();
 		 }
@@ -500,12 +248,9 @@ public final class Key implements Encodable {
 		}
 	
 		/**
-		 * Creates a new instance of a <code>KeyPair</code>.
+		 * Creates an instance of a <code>KeyPair</code> containing this private key and its associated public key.
 		 *
-		 * <p><b>Note</b>: The newly created <code>KeyPair</code> instance will contain the EC key pair
-		 * an hence can be used to sign data.</p>
-		 *
-		 * @return A new instance of a <code>KeyPair</code>.
+		 * @return A new instance of a <code>KeyPair</code> containing this private key and its associated public key.
 		 */
 		public KeyPair generateKeyPair() {
 			return pair().toKeyPair();

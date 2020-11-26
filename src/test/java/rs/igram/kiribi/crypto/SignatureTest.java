@@ -46,7 +46,7 @@ public class SignatureTest {
 		random(b1);
 		byte[] b2 = new byte[1000];
 		random(b2);
-		
+		/*
 		Key k1 = Key.generate();
 		Key k2 = Key.generate();
 		Signature s1 = k1.sign(b1);
@@ -54,7 +54,7 @@ public class SignatureTest {
    	   
 		assertTrue(s1.verify(b1, k1.pk()));
 		assertFalse(s1.verify(b1, k2.pk()));
-				
+			*/	
 		// new
 		KeyPair pair1 = Key.generateKeyPair();
 		Key.Public publicKey1 = (Key.Public)pair1.getPublic();
@@ -64,8 +64,8 @@ public class SignatureTest {
 		Key.Public publicKey2 = (Key.Public)pair2.getPublic();
 		Key.Private privateKey2 = (Key.Private)pair2.getPrivate();
 		
-		s1 = privateKey1.sign(b1);
-		s2 = privateKey2.sign(b2);
+		Signature s1 = privateKey1.sign(b1);
+		Signature s2 = privateKey2.sign(b2);
 		assertTrue(s1.verify(b1, publicKey1));
 		assertFalse(s1.verify(b1, publicKey2));
 
