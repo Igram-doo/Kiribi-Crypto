@@ -24,7 +24,10 @@
  
 package rs.igram.kiribi.crypto;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -71,7 +74,10 @@ public final class Key {
 	
 	static class AbstractKey implements Encodable {
 		public static final String ALGORITHM = "EC25519";
-		byte[] material;
+		transient byte[] material;// = new byte[0];
+		
+		// need for serialization
+		AbstractKey() {}
 		
 		AbstractKey(byte[] material) {
 			this.material = copy(material);
@@ -113,16 +119,18 @@ public final class Key {
 
 		@Override
 		public final String toString() {return Base64.getUrlEncoder().encodeToString(material);}
-		
 	}
 	
 	/**
 	 * An instance of this class represents a public EC 25519 key.
  	 */		
  	public static final class Public extends AbstractKey implements PublicKey {
-		// hash of public key
-		final byte[] hash;
-		
+ 		private static final long serialVersionUID = 1L;
+ 		private transient Address address;
+ 		
+ 		// need for serialization
+ 		private Public() {super();}
+ 		
 		/**
 		 * Initializes a newly created <code>Key.Public</code> object
 		 * from the provided byte array.
@@ -131,7 +139,6 @@ public final class Key {
 		 */				
 		public Public(byte[] material) {
 			super(material);
-			hash = ripemd160(sha256(material));
 		}
 		
 		/**
@@ -142,7 +149,6 @@ public final class Key {
 		 */			
 		public Public(String s) {
 			super(s);
-			hash = ripemd160(sha256(material));
 		}
 		
 		/**
@@ -155,7 +161,6 @@ public final class Key {
 		 */		
 		public Public(VarInput in) throws IOException {
 			super(in);
-			hash = ripemd160(sha256(material));
 		}
 				
 		/**
@@ -166,7 +171,10 @@ public final class Key {
 		 * <code>Key</code> object.
 		 */
 		public Address address() {
-			return new Address(hash);
+			if (address == null) {
+				address = new Address(ripemd160(sha256(material)));
+			}
+			return address;
 		}
 	
 		/**
@@ -205,14 +213,31 @@ public final class Key {
 				return Arrays.equals(material, k.material);
 			}
 			return false;
-		}
+		}		
+		
+		private void writeObject(ObjectOutputStream oos) throws IOException {
+			oos.defaultWriteObject();
+			oos.writeInt(material.length);
+			oos.write(material);
+        }
+ 
+        private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+        	ois.defaultReadObject();
+        	int l = ois.readInt();
+        	material = new byte[l];
+        	ois.read(material);
+        }
 	}
 	
 	/**
 	 * An instance of this class represents a private EC 25519 key.
  	 */		
 	public static final class Private extends AbstractKey implements PrivateKey {
-		private ECKeyPair pair;
+		private static final long serialVersionUID = 1L;
+		private transient ECKeyPair pair;
+ 		
+ 		// need for serialization
+ 		private Private() {super();}
 		
 		/**
 		 * Initializes a newly created <code>Key.Private</code> object
@@ -321,6 +346,19 @@ public final class Key {
 			}
 			return false;
 		}
+		
+		private void writeObject(ObjectOutputStream oos) throws IOException {
+			oos.defaultWriteObject();
+			oos.writeInt(material.length);
+			oos.write(material);
+        }
+ 
+        private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+        	ois.defaultReadObject();
+        	int l = ois.readInt();
+        	material = new byte[l];
+        	ois.read(material);
+        }
 	}
 }
 

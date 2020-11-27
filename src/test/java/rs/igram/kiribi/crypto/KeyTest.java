@@ -24,6 +24,7 @@
  
 package rs.igram.kiribi.crypto;
 
+import java.io.*;
 import java.io.IOException;
 import java.security.KeyPair;
 import java.security.SecureRandom;
@@ -41,6 +42,30 @@ public class KeyTest {
 	}
 
 	@Test
+	public void testSerializable() throws Exception {
+		KeyPair pair = Key.generateKeyPair();
+		Key.Public publicKey = (Key.Public)pair.getPublic();
+		Key.Private privateKey = (Key.Private)pair.getPrivate();
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ObjectOutputStream oos = new ObjectOutputStream(baos);
+		oos.writeObject(publicKey);
+		oos.writeObject(privateKey);
+		oos.flush();
+		oos.close();
+ 
+		byte[] data = baos.toByteArray();
+		
+		ByteArrayInputStream bais  = new ByteArrayInputStream(data);
+		ObjectInputStream ois  = new ObjectInputStream(bais);
+		Key.Public test1 = (Key.Public) ois.readObject();
+		Key.Private test2 = (Key.Private) ois.readObject();
+		ois.close();
+		assertEquals(publicKey.address(), test1.address());
+		assertEquals(privateKey, test2);
+	}
+
+	@Test
 	public void testAddress() throws IOException {
 		KeyPair pair = Key.generateKeyPair();
 		Key.Public publicKey = (Key.Public)pair.getPublic();
@@ -53,13 +78,7 @@ public class KeyTest {
 	public void testVerifySignature() throws IOException {
 		byte[] b = new byte[1000];
 		random(b);
-		/*
-		// depreacted
-		Key k = Key.generate();
-		Signature s = k.sign(b);
-		assertTrue(k.verify(s,b));
-		*/
-		// new
+		
 		KeyPair pair = Key.generateKeyPair();
 		Key.Public publicKey = (Key.Public)pair.getPublic();
 		Key.Private privateKey = (Key.Private)pair.getPrivate();
@@ -71,13 +90,7 @@ public class KeyTest {
 	public void testVerifySignedData() throws IOException {
 		byte[] b = new byte[1000];
 		random(b);
-		/*
-		// depreacted
-		Key k = Key.generate();
-		SignedData d = k.signData(b);
-		assertTrue(k.verify(d,b));
-			*/		
-		// new
+		
 		KeyPair pair = Key.generateKeyPair();
 		Key.Public publicKey = (Key.Public)pair.getPublic();
 		Key.Private privateKey = (Key.Private)pair.getPrivate();
