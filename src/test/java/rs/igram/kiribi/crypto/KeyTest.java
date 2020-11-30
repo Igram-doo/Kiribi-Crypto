@@ -62,7 +62,7 @@ public class KeyTest {
 		EC25519PublicKey test1 = (EC25519PublicKey) ois.readObject();
 		EC25519PrivateKey test2 = (EC25519PrivateKey) ois.readObject();
 		ois.close();
-		assertEquals(publicKey.address(), test1.address());
+		assertEquals(publicKey, test1);
 		assertEquals(privateKey, test2);
 	}
 
@@ -90,15 +90,6 @@ public class KeyTest {
 	//	assertEquals(publicKey.address(), test1.address());
 	//	assertEquals(privateKey, test2);
 	*/
-	}
-
-	@Test
-	public void testAddress() throws IOException {
-		KeyPair pair = KeyPairGenerator.generateKeyPair();
-		EC25519PublicKey publicKey = (EC25519PublicKey)pair.getPublic();
-		EC25519PrivateKey privateKey = (EC25519PrivateKey)pair.getPrivate();
-		
-		assertEquals(publicKey.address(), privateKey.address());
 	}
 
 	@Test

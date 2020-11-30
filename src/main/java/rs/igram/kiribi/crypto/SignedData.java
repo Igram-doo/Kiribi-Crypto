@@ -107,16 +107,6 @@ public final class SignedData implements Encodable {
 	public PublicKey getPubKey() {return new EC25519PublicKey(pk);}
 	
 	/**
-	 * The <code>Address</code> associated with this signed object.
-	 *
-	 * @return The <code>Address</code> associated with this signed object.
-	 * @see Address
-	 */
-	public Address address() {
-		return new Address(ripemd160(sha256(pk)));
-	}
-	
-	/**
 	 * Verifies the validity of this signed object.
 	 *
 	 * @return <code>true</code> if this signed object is valid; <code>false</code> otherwise.

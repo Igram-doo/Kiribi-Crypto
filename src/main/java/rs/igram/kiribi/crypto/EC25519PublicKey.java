@@ -52,7 +52,6 @@ import static rs.igram.kiribi.crypto.Hash.sha256;
  */
 public final class EC25519PublicKey extends EC25519PKey implements PublicKey {
  	private static final long serialVersionUID = 1L;
- 	private transient Address address;
  	private transient byte[] hash;
  		
  	// need for serialization
@@ -89,25 +88,13 @@ public final class EC25519PublicKey extends EC25519PKey implements PublicKey {
 	public EC25519PublicKey(VarInput in) throws IOException {
 		super(in);
 	}
-				
-	/**
-	 * Returns the <code>Address</code> of this public key.
-	 *
-	 * @return Returns the <code>Address</code> of this EC public key.
-	 */
-	public Address address() {
-		if (address == null) {
-			address = new Address(ripemd160(sha256(material)));
-		}
-		return address;
-	}
-				
+			
 	/**
 	 * Returns a crypto-graphic hash of this public key.
 	 *
 	 * @return Returns a crypto-graphic hash of this public key.
 	 */
-	public byte[] hash() {
+	byte[] hash() {
 		if (hash == null) {
 			hash = ripemd160(sha256(material));
 		}

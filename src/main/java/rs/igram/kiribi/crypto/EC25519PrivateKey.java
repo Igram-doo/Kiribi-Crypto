@@ -95,7 +95,7 @@ public final class EC25519PrivateKey extends EC25519PKey implements PrivateKey {
 	 *
 	 * @return A new instance of a <code>KeyPair</code> containing this private key and its associated public key.
 	 */
-	public KeyPair generateKeyPair() {
+	KeyPair generateKeyPair() {
 		return pair().toEC25519KeyPair();
 	}
 			
@@ -138,22 +138,11 @@ public final class EC25519PrivateKey extends EC25519PKey implements PrivateKey {
 	}
 
 	/**
-	 * Returns the <code>Address</code> associated with this private key's public key.
-	 *
-	 * @return Returns the <code>Address</code> associated with this private key's public key.
-	 */
-	public Address address() {
-		byte[] pk = pair().pk;
-		byte[] hash = ripemd160(sha256(pk));
-		return new Address(hash);
-	}
-
-	/**
 	 * Returns a crypto-graphic hash of the public key associated with this private key.
 	 *
 	 * @return Returns a crypto-graphic hash of the public key associated with this private key.
 	 */
-	public byte[] publicKeyHash() {
+	byte[] publicKeyHash() {
 		byte[] pk = pair().pk;
 		return ripemd160(sha256(pk));
 	}
