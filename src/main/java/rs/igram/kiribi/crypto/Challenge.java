@@ -40,6 +40,7 @@ import static rs.igram.kiribi.crypto.Crypto.random;
  *
  * @author Michael Sargent
  */
+@Deprecated
 public final class Challenge implements Encodable {
 	static final int SIZE = 16;
 	private final byte[] b = new byte[SIZE];
