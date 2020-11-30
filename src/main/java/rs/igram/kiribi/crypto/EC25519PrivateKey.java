@@ -50,7 +50,7 @@ import static rs.igram.kiribi.crypto.Hash.sha256;
  *
  * @author Michael Sargent
  */
-public final class EC25519PrivateKey extends EC25519PKey implements PublicKey {
+public final class EC25519PrivateKey extends EC25519PKey implements PrivateKey {
 	private static final long serialVersionUID = 1L;
 	private transient ECKeyPair pair;
  		

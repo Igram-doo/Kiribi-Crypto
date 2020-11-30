@@ -62,7 +62,7 @@ public final class KeyPairGenerator {
 	 * @return A new instance of a <code>KeyPair</code>.
 	 */
 	public static KeyPair generateKeyPair() {
-		return generateECKeyPair().toKeyPair();
+		return generateECKeyPair().toEC25519KeyPair();
 	}
 }
 
