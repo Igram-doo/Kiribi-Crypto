@@ -56,13 +56,13 @@ public class SignatureTest {
 		assertFalse(s1.verify(b1, k2.pk()));
 			*/	
 		// new
-		KeyPair pair1 = Key.generateKeyPair();
-		Key.Public publicKey1 = (Key.Public)pair1.getPublic();
-		Key.Private privateKey1 = (Key.Private)pair1.getPrivate();
+		KeyPair pair1 = KeyPairGenerator.generateKeyPair();
+		EC25519PublicKey publicKey1 = (EC25519PublicKey)pair1.getPublic();
+		EC25519PrivateKey privateKey1 = (EC25519PrivateKey)pair1.getPrivate();
 		
-		KeyPair pair2 = Key.generateKeyPair();
-		Key.Public publicKey2 = (Key.Public)pair2.getPublic();
-		Key.Private privateKey2 = (Key.Private)pair2.getPrivate();
+		KeyPair pair2 = KeyPairGenerator.generateKeyPair();
+		EC25519PublicKey publicKey2 = (EC25519PublicKey)pair2.getPublic();
+		EC25519PrivateKey privateKey2 = (EC25519PrivateKey)pair2.getPrivate();
 		
 		Signature s1 = privateKey1.sign(b1);
 		Signature s2 = privateKey2.sign(b2);

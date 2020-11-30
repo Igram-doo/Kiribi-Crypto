@@ -40,8 +40,8 @@ import static rs.igram.kiribi.crypto.Hash.sha256;
 /**
  * An instance of this class represents signed data.
  *
- * @see Key.Private#signData
- * @see Key.Public#verify​(SignedData, byte[])
+ * @see EC25519PrivateKey#signData
+ * @see EC25519PublicKey#verify​(SignedData, byte[])
  * @author Michael Sargent
  */
 public final class SignedData implements Encodable {
@@ -98,14 +98,6 @@ public final class SignedData implements Encodable {
 	public <T> T data(Decoder<T> decoder) throws IOException {
 		return decoder.decode(data);
 	}
-		
-	/**
-	 * The public key associated with this signed object.
-	 *
-	 * @return The public key associated with this signed object.
-	 */
-	@Deprecated
-	public PublicKey getPublicKey() {return new Key.Public(pk);}
 		
 	/**
 	 * The public key associated with this signed object.

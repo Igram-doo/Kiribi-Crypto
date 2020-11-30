@@ -131,10 +131,6 @@ final class Crypto {
 			this.encoded = encoded;
 		}
 		
-		KeyPair toKeyPair() {
-			return new KeyPair(new Key.Public(pk), new Key.Private(encoded));
-		}
-		
 		KeyPair toEC25519KeyPair() {
 			return new KeyPair(new EC25519PublicKey(pk), new EC25519PrivateKey(encoded));
 		}

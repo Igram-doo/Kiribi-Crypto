@@ -35,7 +35,7 @@ import rs.igram.kiribi.io.VarOutput;
 /**
  * An instance of this class encapsulates a cryptographic hash of a public key.
  *
- * @see Key
+ * @see EC25519PublicKey
  * @author Michael Sargent
  */
 public final class Address implements Encodable {

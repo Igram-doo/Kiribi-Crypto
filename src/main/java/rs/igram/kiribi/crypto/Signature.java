@@ -35,8 +35,8 @@ import rs.igram.kiribi.io.VarOutput;
 /**
  * An instance of this class represents a digital signature.
  *
- * @see Key.Private#sign
- * @see Key.Public#verify​(Signature, byte[])
+ * @see EC25519PrivateKey#sign
+ * @see EC25519PublicKey#verify​(Signature, byte[])
  * @author Michael Sargent
  */
 public final class Signature implements Encodable {
@@ -67,9 +67,7 @@ public final class Signature implements Encodable {
 	 * and public key, <code>false</code> otherwise. .
 	 */
 	public boolean verify(byte[] data, PublicKey key) {
-		if (key instanceof Key.Public) {
-			return Crypto.verify(this, data, ((Key.Public)key).material);
-		} else if (key instanceof EC25519PublicKey) {
+		if (key instanceof EC25519PublicKey) {
 			return Crypto.verify(this, data, ((EC25519PublicKey)key).material);
 		} else {
 			return false;

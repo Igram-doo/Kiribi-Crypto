@@ -44,9 +44,9 @@ public class KeyTest {
 
 	@Test
 	public void testSerializable() throws Exception {
-		KeyPair pair = Key.generateKeyPair();
-		Key.Public publicKey = (Key.Public)pair.getPublic();
-		Key.Private privateKey = (Key.Private)pair.getPrivate();
+		KeyPair pair = KeyPairGenerator.generateKeyPair();
+		EC25519PublicKey publicKey = (EC25519PublicKey)pair.getPublic();
+		EC25519PrivateKey privateKey = (EC25519PrivateKey)pair.getPrivate();
 		
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -59,8 +59,8 @@ public class KeyTest {
 		
 		ByteArrayInputStream bais  = new ByteArrayInputStream(data);
 		ObjectInputStream ois  = new ObjectInputStream(bais);
-		Key.Public test1 = (Key.Public) ois.readObject();
-		Key.Private test2 = (Key.Private) ois.readObject();
+		EC25519PublicKey test1 = (EC25519PublicKey) ois.readObject();
+		EC25519PrivateKey test2 = (EC25519PrivateKey) ois.readObject();
 		ois.close();
 		assertEquals(publicKey.address(), test1.address());
 		assertEquals(privateKey, test2);
@@ -94,9 +94,9 @@ public class KeyTest {
 
 	@Test
 	public void testAddress() throws IOException {
-		KeyPair pair = Key.generateKeyPair();
-		Key.Public publicKey = (Key.Public)pair.getPublic();
-		Key.Private privateKey = (Key.Private)pair.getPrivate();
+		KeyPair pair = KeyPairGenerator.generateKeyPair();
+		EC25519PublicKey publicKey = (EC25519PublicKey)pair.getPublic();
+		EC25519PrivateKey privateKey = (EC25519PrivateKey)pair.getPrivate();
 		
 		assertEquals(publicKey.address(), privateKey.address());
 	}
@@ -106,9 +106,9 @@ public class KeyTest {
 		byte[] b = new byte[1000];
 		random(b);
 		
-		KeyPair pair = Key.generateKeyPair();
-		Key.Public publicKey = (Key.Public)pair.getPublic();
-		Key.Private privateKey = (Key.Private)pair.getPrivate();
+		KeyPair pair = KeyPairGenerator.generateKeyPair();
+		EC25519PublicKey publicKey = (EC25519PublicKey)pair.getPublic();
+		EC25519PrivateKey privateKey = (EC25519PrivateKey)pair.getPrivate();
 		Signature s = privateKey.sign(b);
 		assertTrue(publicKey.verify(s,b));
 	}
@@ -118,9 +118,9 @@ public class KeyTest {
 		byte[] b = new byte[1000];
 		random(b);
 		
-		KeyPair pair = Key.generateKeyPair();
-		Key.Public publicKey = (Key.Public)pair.getPublic();
-		Key.Private privateKey = (Key.Private)pair.getPrivate();
+		KeyPair pair = KeyPairGenerator.generateKeyPair();
+		EC25519PublicKey publicKey = (EC25519PublicKey)pair.getPublic();
+		EC25519PrivateKey privateKey = (EC25519PrivateKey)pair.getPrivate();
 		SignedData d = privateKey.signData(b);
 		assertTrue(publicKey.verify(d,b));
 

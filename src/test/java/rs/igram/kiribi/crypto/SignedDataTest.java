@@ -61,9 +61,9 @@ public class SignedDataTest {
 		assertTrue(s.verify());
 		*/
 		// new
-		KeyPair pair = Key.generateKeyPair();
-		Key.Public publicKey = (Key.Public)pair.getPublic();
-		Key.Private privateKey = (Key.Private)pair.getPrivate();
+		KeyPair pair = KeyPairGenerator.generateKeyPair();
+		EC25519PublicKey publicKey = (EC25519PublicKey)pair.getPublic();
+		EC25519PrivateKey privateKey = (EC25519PrivateKey)pair.getPrivate();
 		SignedData s = privateKey.signData(t.encode());
 		assertTrue(s.verify());
 		

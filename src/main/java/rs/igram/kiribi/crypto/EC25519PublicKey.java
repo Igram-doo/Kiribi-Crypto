@@ -53,12 +53,13 @@ import static rs.igram.kiribi.crypto.Hash.sha256;
 public final class EC25519PublicKey extends EC25519PKey implements PublicKey {
  	private static final long serialVersionUID = 1L;
  	private transient Address address;
+ 	private transient byte[] hash;
  		
  	// need for serialization
  	private EC25519PublicKey() {super();}
  		
 	/**
-	 * Initializes a newly created <code>Key.Public</code> object
+	 * Initializes a newly created <code>EC25519PublicKey</code> object
 	 * from the provided byte array.
 	 *
 	 * @param material The byte array to initialize from.
@@ -68,7 +69,7 @@ public final class EC25519PublicKey extends EC25519PKey implements PublicKey {
 	}
 		
 	/**
-	 * Initializes a newly created <code>Key.Public</code> object
+	 * Initializes a newly created <code>EC25519PublicKey</code> object
 	 * from the provided <code>String</code>.
 	 *
 	 * @param s The string to initialize from.
@@ -78,7 +79,7 @@ public final class EC25519PublicKey extends EC25519PKey implements PublicKey {
 	}
 		
 	/**
-	 * Initializes a newly created <code>Key.Public</code> object
+	 * Initializes a newly created <code>EC25519PublicKey</code> object
 	 * so that it reads from the provided <code>VarInput</code>.
 	 *
 	 * @param in The input stream to read from.
@@ -90,17 +91,27 @@ public final class EC25519PublicKey extends EC25519PKey implements PublicKey {
 	}
 				
 	/**
-	 * Returns the <code>Address</code> of the EC public key associated with this 
-	 * <code>Key</code> object.
+	 * Returns the <code>Address</code> of this public key.
 	 *
-	 * @return Returns the <code>Address</code> of the EC public key associated with this 
-	 * <code>Key</code> object.
+	 * @return Returns the <code>Address</code> of this EC public key.
 	 */
 	public Address address() {
 		if (address == null) {
 			address = new Address(ripemd160(sha256(material)));
 		}
 		return address;
+	}
+				
+	/**
+	 * Returns a crypto-graphic hash of this public key.
+	 *
+	 * @return Returns a crypto-graphic hash of this public key.
+	 */
+	public byte[] hash() {
+		if (hash == null) {
+			hash = ripemd160(sha256(material));
+		}
+		return hash;
 	}
 	
 	/**
@@ -126,7 +137,7 @@ public final class EC25519PublicKey extends EC25519PKey implements PublicKey {
 	  * @throws IOException if there was a problem verifying the provided signed data and byte array.
 	  */
 	 public boolean verify(SignedData signed, byte[] data) throws IOException {
-	 	 return Arrays.equals(material, signed.getPublicKey().getEncoded()) 
+	 	 return Arrays.equals(material, signed.getPubKey().getEncoded()) 
 	  	 && Arrays.equals(data, signed.data()) 
 	  	 && signed.verify();
 	 }
@@ -134,8 +145,8 @@ public final class EC25519PublicKey extends EC25519PKey implements PublicKey {
 	@Override
 	public boolean equals(Object o){
 		if(this == o) return true;
-		if(o != null && o.getClass() == Key.Public.class){
-			Key.Public k = (Key.Public)o;
+		if(o != null && o.getClass() == EC25519PublicKey.class){
+			EC25519PublicKey k = (EC25519PublicKey)o;
 			return Arrays.equals(material, k.material);
 		}
 		return false;

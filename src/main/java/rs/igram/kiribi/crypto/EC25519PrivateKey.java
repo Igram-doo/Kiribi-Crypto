@@ -58,7 +58,7 @@ public final class EC25519PrivateKey extends EC25519PKey implements PrivateKey {
  	private EC25519PrivateKey() {super();}
 		
 	/**
-	 * Initializes a newly created <code>Key.Private</code> object
+	 * Initializes a newly created <code>EC25519PrivateKey</code> object
 	 * from the provided byte array.
 	 *
 	 * @param material The byte array to initialize from.
@@ -69,7 +69,7 @@ public final class EC25519PrivateKey extends EC25519PKey implements PrivateKey {
 	}
 		
 	/**
-	 * Initializes a newly created <code>Key.Private</code> object
+	 * Initializes a newly created <code>EC25519PrivateKey</code> object
 	 * from the provided <code>String</code>.
 	 *
 	 * @param s The string to initialize from.
@@ -79,7 +79,7 @@ public final class EC25519PrivateKey extends EC25519PKey implements PrivateKey {
 	}
 	
 	/**
-	 * Initializes a newly created <code>Key.Private</code> object
+	 * Initializes a newly created <code>EC25519PrivateKey</code> object
 	 * so that it reads from the provided <code>VarInput</code>.
 	 *
 	 * @param in The input stream to read from.
@@ -96,7 +96,7 @@ public final class EC25519PrivateKey extends EC25519PKey implements PrivateKey {
 	 * @return A new instance of a <code>KeyPair</code> containing this private key and its associated public key.
 	 */
 	public KeyPair generateKeyPair() {
-		return pair().toKeyPair();
+		return pair().toEC25519KeyPair();
 	}
 			
 	/**
@@ -138,7 +138,7 @@ public final class EC25519PrivateKey extends EC25519PKey implements PrivateKey {
 	}
 
 	/**
-	 * Return the <code>Address</code> associated with this private key's public key.
+	 * Returns the <code>Address</code> associated with this private key's public key.
 	 *
 	 * @return Returns the <code>Address</code> associated with this private key's public key.
 	 */
@@ -146,6 +146,16 @@ public final class EC25519PrivateKey extends EC25519PKey implements PrivateKey {
 		byte[] pk = pair().pk;
 		byte[] hash = ripemd160(sha256(pk));
 		return new Address(hash);
+	}
+
+	/**
+	 * Returns a crypto-graphic hash of the public key associated with this private key.
+	 *
+	 * @return Returns a crypto-graphic hash of the public key associated with this private key.
+	 */
+	public byte[] publicKeyHash() {
+		byte[] pk = pair().pk;
+		return ripemd160(sha256(pk));
 	}
 		
 	private ECKeyPair pair() {
@@ -158,8 +168,8 @@ public final class EC25519PrivateKey extends EC25519PKey implements PrivateKey {
 	@Override
 	public boolean equals(Object o){
 		if(this == o) return true;
-		if(o != null && o.getClass() == Key.Private.class){
-			Key.Private k = (Key.Private)o;
+		if(o != null && o.getClass() == EC25519PrivateKey.class){
+			EC25519PrivateKey k = (EC25519PrivateKey)o;
 			return Arrays.equals(material, k.material);
 		}
 		return false;

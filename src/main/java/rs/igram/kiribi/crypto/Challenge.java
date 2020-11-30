@@ -29,10 +29,6 @@ import java.security.PublicKey;
 import java.util.Arrays;
 import java.util.Base64;
 
-import rs.igram.kiribi.crypto.Address;
-import rs.igram.kiribi.crypto.Key;
-import rs.igram.kiribi.crypto.Signature;
-import rs.igram.kiribi.crypto.SignedData;
 import rs.igram.kiribi.io.Encodable;
 import rs.igram.kiribi.io.VarInput; 
 import rs.igram.kiribi.io.VarOutput;
@@ -102,9 +98,9 @@ public final class Challenge implements Encodable {
 	 * @return <code>true</code> if this challenge was verified, <code>flase</code> otherise.
 	 */
 	public boolean verify(Signature sig, PublicKey key) {
-		if (key instanceof Key.Public) {
+		if (key instanceof EC25519PublicKey) {
 			try{
-				return ((Key.Public)key).verify(sig, b);
+				return ((EC25519PublicKey)key).verify(sig, b);
 			}catch(IOException e){
 				return false;
 			}
