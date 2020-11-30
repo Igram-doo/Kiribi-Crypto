@@ -104,7 +104,15 @@ public final class SignedData implements Encodable {
 	 *
 	 * @return The public key associated with this signed object.
 	 */
+	@Deprecated
 	public PublicKey getPublicKey() {return new Key.Public(pk);}
+		
+	/**
+	 * The public key associated with this signed object.
+	 *
+	 * @return The public key associated with this signed object.
+	 */
+	public PublicKey getPubKey() {return new EC25519PublicKey(pk);}
 	
 	/**
 	 * The <code>Address</code> associated with this signed object.

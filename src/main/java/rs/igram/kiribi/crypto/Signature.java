@@ -69,6 +69,8 @@ public final class Signature implements Encodable {
 	public boolean verify(byte[] data, PublicKey key) {
 		if (key instanceof Key.Public) {
 			return Crypto.verify(this, data, ((Key.Public)key).material);
+		} else if (key instanceof EC25519PublicKey) {
+			return Crypto.verify(this, data, ((EC25519PublicKey)key).material);
 		} else {
 			return false;
 		}

@@ -26,6 +26,7 @@ package rs.igram.kiribi.crypto;
 
 import java.io.*;
 import java.io.IOException;
+import java.security.*;
 import java.security.KeyPair;
 import java.security.SecureRandom;
 
@@ -63,6 +64,32 @@ public class KeyTest {
 		ois.close();
 		assertEquals(publicKey.address(), test1.address());
 		assertEquals(privateKey, test2);
+	}
+
+	@Test
+	public void testKeyStore() throws Exception {
+		/*
+		Security.setProperty("crypto.policy", "unlimited");
+		KeyPair pair = Key.generateKeyPair();
+		Key.Public publicKey = (Key.Public)pair.getPublic();
+		Key.Private privateKey = (Key.Private)pair.getPrivate();
+		
+		Key.Cert[] certs = new Key.Cert[] {new Key.Cert(publicKey)};
+		
+		KeyStore keystore = KeyStore.getInstance("JKS");
+		keystore.load(null, "mypass".toCharArray());
+		KeyStore.PasswordProtection keyPP = new KeyStore.PasswordProtection("mypass".toCharArray());
+		System.out.println("TURD: " + keyPP.getProtectionAlgorithm());
+		System.out.println("CRAP: " + certs + " " + privateKey);
+		KeyStore.PrivateKeyEntry skey = new KeyStore.PrivateKeyEntry(privateKey, certs);
+		
+		keystore.setEntry("mypass", skey, keyPP);
+		System.out.println("SHIT: ");
+		KeyStore.PrivateKeyEntry test = (KeyStore.PrivateKeyEntry)keystore.getEntry("mypass", keyPP);
+		System.out.println("FUCK: " + test);
+	//	assertEquals(publicKey.address(), test1.address());
+	//	assertEquals(privateKey, test2);
+	*/
 	}
 
 	@Test

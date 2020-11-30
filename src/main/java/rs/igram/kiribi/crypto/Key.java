@@ -31,7 +31,9 @@ import java.io.Serializable;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.cert.Certificate;
 import java.util.Arrays;
+import javax.crypto.SecretKey;
 
 import rs.igram.kiribi.io.Encodable;
 import rs.igram.kiribi.io.VarInput;
@@ -51,6 +53,7 @@ import static rs.igram.kiribi.crypto.Hash.sha256;
  * @see SignedData
  * @author Michael Sargent
  */
+@Deprecated
 public final class Key {
 	private Key() {}
 			
@@ -105,7 +108,7 @@ public final class Key {
 		}
 		
 		public final String	getFormat() {
-			return null;
+			return "RAW";
 		}
 		
 		private static byte[] copy(byte[] src) {
@@ -124,6 +127,7 @@ public final class Key {
 	/**
 	 * An instance of this class represents a public EC 25519 key.
  	 */		
+ 	@Deprecated
  	public static final class Public extends AbstractKey implements PublicKey {
  		private static final long serialVersionUID = 1L;
  		private transient Address address;
@@ -232,7 +236,8 @@ public final class Key {
 	/**
 	 * An instance of this class represents a private EC 25519 key.
  	 */		
-	public static final class Private extends AbstractKey implements PrivateKey {
+ 	@Deprecated
+	public static final class Private extends AbstractKey implements PrivateKey, SecretKey {
 		private static final long serialVersionUID = 1L;
 		private transient ECKeyPair pair;
  		
@@ -359,6 +364,25 @@ public final class Key {
         	material = new byte[l];
         	ois.read(material);
         }
+	}
+	
+	static class Cert extends Certificate {
+		PublicKey key;
+		
+		public 	Cert(PublicKey key) {
+			super("CUSTOM");
+			this.key = key;
+		}
+		
+		public byte[] getEncoded() { return new byte[0]; }
+		
+		public PublicKey getPublicKey() { return key; }
+		
+		public String toString() { return ""; }
+		
+		public void	verify(PublicKey key) { }
+		
+		public void	verify(PublicKey key, String sigProvider) { }
 	}
 }
 
