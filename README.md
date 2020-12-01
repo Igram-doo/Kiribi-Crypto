@@ -8,9 +8,9 @@ the ***safe*** elliptic curve 25519.
 ### Features
 * EC Crypto classes and interfaces based on
 the ***safe*** elliptic curve 25519.
-* Encodable Digital Signatures.
+* [Encodable](https://github.com/Igram-doo/Kiribi-IO) Digital Signatures.
 * Key Exchange.
-* Encodable SignedObjects.
+* [Encodable](https://github.com/Igram-doo/Kiribi-IO) SignedObjects.
 
 ### Overview
 EC Crypto classes and interfaces based on
