@@ -40,9 +40,6 @@ Signed data are crypto-graphic quantities which encapsulate data and a signature
 ##### Exports
 * rs.igram.kiribi.crypto
 
-### Requirements
-To do
-
 ### To Do
 * Determine minimum supported Java version.
 * Standard encodings for public and private keys.
@@ -51,5 +48,5 @@ To do
 * Standard KeyGenerator.
 * Standard Signature.
 * Security Provider.
-* Self-signed Certiciate generation.
+* Self-signed Certificate generation.
 * Keystore support.
