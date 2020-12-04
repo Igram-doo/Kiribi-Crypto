@@ -54,18 +54,11 @@ public class SignedDataTest {
 	@Test
 	public void testVerify() throws IOException {
 		TestEncodable t = new TestEncodable();	
-		/*
-		// depreated
-		Key k = Key.generate();
-		SignedData s = k.signData(t.encode());
-		assertTrue(s.verify());
-		*/
-		// new
 		KeyPair pair = KeyPairGenerator.generateKeyPair();
 		EC25519PublicKey publicKey = (EC25519PublicKey)pair.getPublic();
 		EC25519PrivateKey privateKey = (EC25519PrivateKey)pair.getPrivate();
 		SignedData s = privateKey.signData(t.encode());
-		assertTrue(s.verify());
+		assertTrue(s.verify(publicKey));
 		
    }
     

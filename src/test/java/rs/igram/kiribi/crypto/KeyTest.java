@@ -101,9 +101,6 @@ public class KeyTest {
 		EC25519PublicKey publicKey = (EC25519PublicKey)pair.getPublic();
 		EC25519PrivateKey privateKey = (EC25519PrivateKey)pair.getPrivate();
 		Signature s = privateKey.sign(b);
-		// deprecated
-		assertTrue(publicKey.verify(s,b));
-		
 		assertTrue(s.verify(b, publicKey));
 	}
 
@@ -116,9 +113,6 @@ public class KeyTest {
 		EC25519PublicKey publicKey = (EC25519PublicKey)pair.getPublic();
 		EC25519PrivateKey privateKey = (EC25519PrivateKey)pair.getPrivate();
 		SignedData d = privateKey.signData(b);
-		// deprecated
-		assertTrue(publicKey.verify(d,b));
-
 		assertTrue(d.verify(publicKey));
 		assertEquals(publicKey, d.getPublicKey());
 	}
