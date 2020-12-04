@@ -105,6 +105,7 @@ public final class EC25519PrivateKey extends EC25519PKey implements PrivateKey {
 	 * @return Return a <code>SignedData</code> object representing this <code>Key</code> object.
 	 * @throws IOException if there was a problem signing this key.
 	 */
+	@Deprecated
 	public SignedData signedKey() throws IOException {
 		ECKeyPair pair = pair();
 		byte[] hash = ripemd160(sha256(pair.pk));
@@ -120,6 +121,7 @@ public final class EC25519PrivateKey extends EC25519PKey implements PrivateKey {
 	 * this <code>Key</code> object.
 	 * @throws IOException if there was a problem signing the provided byte array.
 	 */
+	@Deprecated
 	public SignedData signData(byte[] data) throws IOException {
 	 	return new SignedData(pair(), data);
 	}
@@ -133,6 +135,7 @@ public final class EC25519PrivateKey extends EC25519PKey implements PrivateKey {
 	 * this <code>Key</code> object.
 	 * @throws IOException if there was a problem generating the signature from the provided byte array.
 	 */
+	@Deprecated
 	public Signature sign(byte[] data) throws IOException {
 		return Crypto.sign(pair(), data);
 	}
@@ -147,7 +150,7 @@ public final class EC25519PrivateKey extends EC25519PKey implements PrivateKey {
 		return ripemd160(sha256(pk));
 	}
 		
-	private ECKeyPair pair() {
+	ECKeyPair pair() {
 		if (pair == null) {
 			pair = generateECKeyPair(material);
 		}

@@ -91,7 +91,7 @@ public class KeyTest {
 	//	assertEquals(privateKey, test2);
 	*/
 	}
-
+/*
 	@Test
 	public void testVerifySignature() throws IOException {
 		byte[] b = new byte[1000];
@@ -116,4 +116,5 @@ public class KeyTest {
 		assertTrue(d.verify(publicKey));
 		assertEquals(publicKey, d.getPublicKey());
 	}
+	*/
 }

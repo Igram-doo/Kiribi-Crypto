@@ -64,8 +64,8 @@ public class SignatureTest {
 		EC25519PublicKey publicKey2 = (EC25519PublicKey)pair2.getPublic();
 		EC25519PrivateKey privateKey2 = (EC25519PrivateKey)pair2.getPrivate();
 		
-		Signature s1 = privateKey1.sign(b1);
-		Signature s2 = privateKey2.sign(b2);
+		Signature s1 = Signature.sign(b1, privateKey1);
+		Signature s2 = Signature.sign(b2, privateKey2);
 		assertTrue(s1.verify(b1, publicKey1));
 		assertFalse(s1.verify(b1, publicKey2));
 

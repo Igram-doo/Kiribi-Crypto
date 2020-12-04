@@ -25,6 +25,7 @@
 package rs.igram.kiribi.crypto;
 
 import java.io.IOException;
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Arrays;
 
@@ -70,7 +71,22 @@ public final class SignedData implements Encodable {
 		pk = in.readBytes();
 		signature = new Signature(in);
 	}
-	
+		
+	/**
+	 * Returns a <code>SignedData</code> object associated with the provided byte array and
+	 * this <code>Key</code> object.
+	 *
+	 * @param data The byte array to be signed.
+	 * @param key The private key used for signing.
+	 * @return Returns a <code>SignedData</code> object associated with the provided byte array.
+	 * @throws IOException if there was a problem signing the provided byte array.
+	 * @throws ClassCastException if the provided key is not an instance of <code>EC25519PrivateKey</code>.
+	 */
+	public static SignedData signData(byte[] data, PrivateKey key) throws IOException {
+		EC25519PrivateKey eck = (EC25519PrivateKey)key;
+	 	return new SignedData(eck.pair(), data);
+	}
+
 	@Override
 	public void write(VarOutput out) throws IOException {
 		out.writeBytes(data);
