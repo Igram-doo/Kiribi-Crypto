@@ -58,13 +58,11 @@ public final class Signature implements Encodable {
 	}
 			
 	/**
-	 * Returns a <code>Signature</code> object associated with the provided byte array and
-	 * this <code>Key</code> object.
+	 * Returns a <code>Signature</code> object associated with the provided byte array.
 	 *
 	 * @param data The byte array for which the signature is to be generated.
 	 * @param key The private key used for signing.
-	 * @return Returns a <code>Signature</code> object associated with the provided byte array and
-	 * this <code>Key</code> object.
+	 * @return Returns a <code>Signature</code> object associated with the provided byte array.
 	 * @throws IOException if there was a problem generating the signature from the provided byte array.
 	 * @throws ClassCastException if the provided key is not an instance of <code>EC25519PrivateKey</code>.
 	 */

@@ -98,47 +98,6 @@ public final class EC25519PrivateKey extends EC25519PKey implements PrivateKey {
 	KeyPair generateKeyPair() {
 		return pair().toEC25519KeyPair();
 	}
-			
-	/**
-	 * Returns a <code>SignedData</code> object representing this <code>Key</code> object.
-	 *
-	 * @return Return a <code>SignedData</code> object representing this <code>Key</code> object.
-	 * @throws IOException if there was a problem signing this key.
-	 */
-	@Deprecated
-	public SignedData signedKey() throws IOException {
-		ECKeyPair pair = pair();
-		byte[] hash = ripemd160(sha256(pair.pk));
-		return new SignedData(pair, hash);
-	}
-	
-	/**
-	 * Returns a <code>SignedData</code> object associated with the provided byte array and
-	 * this <code>Key</code> object.
-	 *
-	 * @param data The byte array to be signed.
-	 * @return Returns a <code>SignedData</code> object associated with the provided byte array and
-	 * this <code>Key</code> object.
-	 * @throws IOException if there was a problem signing the provided byte array.
-	 */
-	@Deprecated
-	public SignedData signData(byte[] data) throws IOException {
-	 	return new SignedData(pair(), data);
-	}
-	
-	/**
-	 * Returns a <code>Signature</code> object associated with the provided byte array and
-	 * this <code>Key</code> object.
-	 *
-	 * @param data The byte array for which the signature is to be generated.
-	 * @return Returns a <code>Signature</code> object associated with the provided byte array and
-	 * this <code>Key</code> object.
-	 * @throws IOException if there was a problem generating the signature from the provided byte array.
-	 */
-	@Deprecated
-	public Signature sign(byte[] data) throws IOException {
-		return Crypto.sign(pair(), data);
-	}
 
 	/**
 	 * Returns a crypto-graphic hash of the public key associated with this private key.

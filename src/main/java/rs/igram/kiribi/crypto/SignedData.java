@@ -73,8 +73,7 @@ public final class SignedData implements Encodable {
 	}
 		
 	/**
-	 * Returns a <code>SignedData</code> object associated with the provided byte array and
-	 * this <code>Key</code> object.
+	 * Returns a <code>SignedData</code> object associated with the provided byte array.
 	 *
 	 * @param data The byte array to be signed.
 	 * @param key The private key used for signing.
