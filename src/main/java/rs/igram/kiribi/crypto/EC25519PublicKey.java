@@ -104,12 +104,14 @@ public final class EC25519PublicKey extends EC25519PKey implements PublicKey {
 	/**
 	 * Verifies if the provided signature is associated with the provided byte array and this key.
 	 *
+	 * @deprecated Use {@link Signature#verify(byte[], PublicKey)}.
 	 * @param signature The signature associated with this key and provided byte array.
 	 * @param data The byte array associated with this key and provided signature.
 	 * @return <code>true</code> if the provided signature is associated with the provide byte array
 	 * and this key, <code>false</code> otherwise. .
 	 * @throws IOException if there was a problem verifying the provided byte array.
 	 */
+	@Deprecated
 	public boolean verify(Signature signature, byte[] data) throws IOException {
 	 	return signature.verify(data, this);
 	}
@@ -117,12 +119,14 @@ public final class EC25519PublicKey extends EC25519PKey implements PublicKey {
 	 /**
 	  * Verifies if the provided signed object is associated with the provided byte array and this key.
 	  *
+	  * @deprecated Use {@link SignedData#verify}.
 	  * @param signed The signed data associated with this key and provided byte array.
 	  * @param data The byte array associated with this key and provided signed data.
 	  * @return <code>true</code> if the provided signed data and byte array are associated with 
 	  * this key, <code>false</code> otherwise. .
 	  * @throws IOException if there was a problem verifying the provided signed data and byte array.
 	  */
+	 @Deprecated
 	 public boolean verify(SignedData signed, byte[] data) throws IOException {
 	 	 return Arrays.equals(material, signed.getPubKey().getEncoded()) 
 	  	 && Arrays.equals(data, signed.data()) 
