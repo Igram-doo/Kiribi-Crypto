@@ -104,14 +104,36 @@ public final class SignedData implements Encodable {
 	 *
 	 * @return The public key associated with this signed object.
 	 */
+	public PublicKey getPublicKey() {return new EC25519PublicKey(pk);}
+		
+	/**
+	 * The public key associated with this signed object.
+	 *
+	 * @deprecated Use {@link getPublicKey}.
+	 * @return The public key associated with this signed object.
+	 */
+	@Deprecated
 	public PublicKey getPubKey() {return new EC25519PublicKey(pk);}
 	
 	/**
 	 * Verifies the validity of this signed object.
 	 *
+	 * @param key The public key associated with this signed object.
 	 * @return <code>true</code> if this signed object is valid; <code>false</code> otherwise.
 	 * @throws IOException if there was a problem verifying this signed data object.
 	 */
+	public boolean verify(PublicKey key) throws IOException {
+		return getPublicKey().equals(key) && Crypto.verify(signature, data, pk);
+	}
+	
+	/**
+	 * Verifies the validity of this signed object.
+	 *
+	 * @deprecated Use {@link verify(PublicKey)}.
+	 * @return <code>true</code> if this signed object is valid; <code>false</code> otherwise.
+	 * @throws IOException if there was a problem verifying this signed data object.
+	 */
+	@Deprecated
 	public boolean verify() throws IOException {
 		return Crypto.verify(signature, data, pk);
 	}

@@ -26,7 +26,7 @@ package rs.igram.kiribi.crypto;
 
 import java.io.*;
 import java.io.IOException;
-import java.security.*;
+//import java.security.*;
 import java.security.KeyPair;
 import java.security.SecureRandom;
 
@@ -101,7 +101,10 @@ public class KeyTest {
 		EC25519PublicKey publicKey = (EC25519PublicKey)pair.getPublic();
 		EC25519PrivateKey privateKey = (EC25519PrivateKey)pair.getPrivate();
 		Signature s = privateKey.sign(b);
+		// deprecated
 		assertTrue(publicKey.verify(s,b));
+		
+		assertTrue(s.verify(b, publicKey));
 	}
 
 	@Test
@@ -113,7 +116,10 @@ public class KeyTest {
 		EC25519PublicKey publicKey = (EC25519PublicKey)pair.getPublic();
 		EC25519PrivateKey privateKey = (EC25519PrivateKey)pair.getPrivate();
 		SignedData d = privateKey.signData(b);
+		// deprecated
 		assertTrue(publicKey.verify(d,b));
 
+		assertTrue(d.verify(publicKey));
+		assertEquals(publicKey, d.getPublicKey());
 	}
 }
