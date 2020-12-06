@@ -30,24 +30,31 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.AlgorithmParameters;
+import java.security.KeyPair;
+import java.security.KeyStoreException;
 import java.security.SecureRandom;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Base64;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableEntryException;
 import javax.crypto.spec.SecretKeySpec;
 
 
 import java.nio.ByteBuffer;
+import java.security.cert.CertificateException;
 import java.security.Provider;
 import java.security.SecureRandom;
 
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import rs.igram.kiribi.io.VarInputStream;
 import rs.igram.kiribi.io.VarOutputStream;
 
+import static java.security.KeyStore.*;
 import static javax.crypto.Cipher.*;
 
 import static rs.igram.kiribi.crypto.Crypto.Cipher;
@@ -69,15 +76,79 @@ final class Curve25519Provider extends Crypto.CryptoSpi {
 	private static final int AES_KEY_SIZE = 16; 
 	// iv
 	private static final byte[] v = bytes(743419265,1221901279);
-
+			
 	@Override
-	byte[] key(byte[] secret, byte[] iv, int len) {
-		byte[] tmp = concat(secret, iv);
-		tmp = sha256(sha256(tmp));
+	java.security.KeyStore getKeyStoreInstance(char[] password) throws KeyStoreException {
+		try {
+			java.security.KeyStore keystore = java.security.KeyStore.getInstance("JCEKS");
+			keystore.load(null, password);
+			return keystore;
+		} catch(IOException e) {
+			// shouldn'' happen
+			throw new RuntimeException(e);
+		} catch(NoSuchAlgorithmException e) {
+			throw new KeyStoreException(e);
+		} catch(CertificateException e) {
+			throw new KeyStoreException(e);
+		}
+	}
 		
-		return crop(tmp, len);
+	@Override
+	KeyPair generateKeyPair​(java.security.KeyStore keystore, String alias, char[] password) throws KeyStoreException {
+		ECKeyPair pair = generateECKeyPair();
+		put(pair.encoded, alias, password, keystore);
+		return pair.toEC25519KeyPair();
+	}
+		
+	@Override
+	KeyPair getKeyPair​(java.security.KeyStore keystore, String alias, char[] password) throws KeyStoreException {
+		EC25519PrivateKey key = get(alias, password, keystore);
+		return key == null ? null :  key.generateKeyPair();
 	}
 	
+	@Override
+	SecretKey generateSecretKey​(java.security.KeyStore keystore, String alias, char[] password, int size, String algorthim) throws KeyStoreException {
+		byte[] b = new byte[size];
+		Crypto.random(b);
+		SecretKeySpec spec = new SecretKeySpec(b, algorthim);		
+		keystore.setEntry(alias, new SecretKeyEntry(spec), new PasswordProtection(password));
+		return spec;
+	}
+	
+	@Override
+	SecretKey getSecretKey​(java.security.KeyStore keystore, String alias, char[] password) throws KeyStoreException {
+		try {
+			SecretKeyEntry entry = (SecretKeyEntry)keystore.getEntry(alias, new PasswordProtection(password));
+			return entry == null ? null : 
+				(entry.getSecretKey().getAlgorithm().equals("25519") ? 
+					null  :
+					entry.getSecretKey());
+		} catch(NoSuchAlgorithmException e) {
+			throw new KeyStoreException(e);
+		} catch(UnrecoverableEntryException e) {
+			throw new KeyStoreException(e);
+		}
+	}
+
+	private void put(byte[] key, String alias, char[] pw, java.security.KeyStore keystore) throws KeyStoreException {
+		SecretKeySpec spec = new SecretKeySpec(key, "25519");		
+		keystore.setEntry(alias, new SecretKeyEntry(spec), new PasswordProtection(pw));	
+	}
+
+	private EC25519PrivateKey get(String alias, char[] pw, java.security.KeyStore keystore) throws KeyStoreException {
+		try {
+			SecretKeyEntry entry = (SecretKeyEntry)keystore.getEntry(alias, new PasswordProtection(pw));
+			return entry == null ? null : 
+				(entry.getSecretKey().getAlgorithm().equals("25519") ? 
+					new EC25519PrivateKey(entry.getSecretKey().getEncoded()) :
+					null);
+		} catch(NoSuchAlgorithmException e) {
+			throw new KeyStoreException(e);
+		} catch(UnrecoverableEntryException e) {
+			throw new KeyStoreException(e);
+		}
+	}
+
 	@Override
 	ECKeyPair generateECKeyPair() {
 		byte[] encoded = new byte[32];

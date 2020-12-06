@@ -46,16 +46,7 @@ public class SignatureTest {
 		random(b1);
 		byte[] b2 = new byte[1000];
 		random(b2);
-		/*
-		Key k1 = Key.generate();
-		Key k2 = Key.generate();
-		Signature s1 = k1.sign(b1);
-		Signature s2 = k2.sign(b2);
-   	   
-		assertTrue(s1.verify(b1, k1.pk()));
-		assertFalse(s1.verify(b1, k2.pk()));
-			*/	
-		// new
+		
 		KeyPair pair1 = KeyPairGenerator.generateKeyPair();
 		EC25519PublicKey publicKey1 = (EC25519PublicKey)pair1.getPublic();
 		EC25519PrivateKey privateKey1 = (EC25519PrivateKey)pair1.getPrivate();

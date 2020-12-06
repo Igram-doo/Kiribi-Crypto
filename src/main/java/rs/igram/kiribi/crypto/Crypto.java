@@ -25,9 +25,19 @@
 package rs.igram.kiribi.crypto;
 
 import java.security.KeyPair;
+import java.security.KeyStoreException;
 import java.security.SecureRandom;
+import java.security.Security;
 import java.security.GeneralSecurityException;
 import java.util.Base64;
+import javax.crypto.SecretKey;
+
+import static rs.igram.kiribi.crypto.Hash.sha256;
+import static rs.igram.kiribi.io.ByteUtils.bytes;
+import static rs.igram.kiribi.io.ByteUtils.concat;
+import static rs.igram.kiribi.io.ByteUtils.crop;
+import static rs.igram.kiribi.io.ByteUtils.extract;
+import static rs.igram.kiribi.io.ByteUtils.xor;
 
 /**
  * Interface supporting reading and writing of byte arrays.
@@ -39,6 +49,7 @@ final class Crypto {
 	static final SecureRandom random;
 
  	static {
+ 		Security.setProperty("crypto.policy", "unlimited");
 		try{
 			random = SecureRandom.getInstance("SHA1PRNG", "SUN"); 
 		}catch(Exception e){
@@ -113,6 +124,26 @@ final class Crypto {
 	static Cipher cipher() {
 		return spi.cipher();
 	}
+			
+	static java.security.KeyStore getKeyStoreInstance(char[] password) throws KeyStoreException {
+		return spi.getKeyStoreInstance(password);
+	}
+		
+	static KeyPair generateKeyPair​(java.security.KeyStore keystore, String alias, char[] password) throws KeyStoreException {
+		return spi.generateKeyPair​(keystore, alias, password);
+	}	
+	
+	static KeyPair getKeyPair​(java.security.KeyStore keystore, String alias, char[] password) throws KeyStoreException {
+		return spi.getKeyPair​(keystore, alias, password);
+	}
+		
+	static SecretKey generateSecretKey​(java.security.KeyStore keystore, String alias, char[] password, int size, String algorthim) throws KeyStoreException {
+		return spi.generateSecretKey​(keystore, alias, password, size, algorthim);
+	}	
+	
+	static SecretKey getSecretKey​(java.security.KeyStore keystore, String alias, char[] password) throws KeyStoreException {
+		return spi.getSecretKey​(keystore, alias, password);
+	}
 	
 	static abstract class Cipher {
 		abstract void init(byte[] key);
@@ -138,12 +169,23 @@ final class Crypto {
 	
 	static abstract class CryptoSpi {
 		abstract Cipher cipher();
-		abstract byte[] key(byte[] secret, byte[]  iv, int len);
 		abstract ECKeyPair generateECKeyPair();
 		abstract ECKeyPair generateECKeyPair(byte[] encoded);
 		abstract byte[] agreement(ECKeyPair pair, byte[] key);
 		abstract Signature sign(ECKeyPair pair, byte[] data);
 		abstract boolean verify(Signature sig, byte[] data, byte[] pk);
+		abstract java.security.KeyStore getKeyStoreInstance(char[] password) throws KeyStoreException;
+		abstract KeyPair generateKeyPair​(java.security.KeyStore keystore, String alias, char[] password) throws KeyStoreException;
+		abstract KeyPair getKeyPair​(java.security.KeyStore keystore, String alias, char[] password) throws KeyStoreException;
+		abstract SecretKey generateSecretKey​(java.security.KeyStore keystore, String alias, char[] password, int size, String algorthim) throws KeyStoreException;
+		abstract SecretKey getSecretKey​(java.security.KeyStore keystore, String alias, char[] password) throws KeyStoreException;
+		
+		final byte[] key(byte[] secret, byte[]  iv, int len) {
+			byte[] tmp = concat(secret, iv);
+			tmp = sha256(sha256(tmp));
+		
+			return crop(tmp, len);
+		}
 	}
 }
 

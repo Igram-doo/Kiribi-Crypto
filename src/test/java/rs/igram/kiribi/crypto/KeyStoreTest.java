@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class KeyTest {
+public class KeyStoreTest {
 	static final SecureRandom random = new SecureRandom();
 	
 	static void random(byte[] bytes) {
@@ -47,26 +47,24 @@ public class KeyTest {
 	}
 
 	@Test
-	public void testSerializable() throws Exception {
+	public void testKeyPair() throws Exception {
 		KeyPair pair = KeyPairGenerator.generateKeyPair();
-		EC25519PublicKey publicKey = (EC25519PublicKey)pair.getPublic();
-		EC25519PrivateKey privateKey = (EC25519PrivateKey)pair.getPrivate();
+		KeyStore keystore = KeyStore.instance("password".toCharArray());
 		
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ObjectOutputStream oos = new ObjectOutputStream(baos);
-		oos.writeObject(publicKey);
-		oos.writeObject(privateKey);
-		oos.flush();
-		oos.close();
- 
-		byte[] data = baos.toByteArray();
+		KeyPair pair1 = keystore.generateKeyPair("alias", "password".toCharArray());
+		KeyPair pair2 = keystore.getKeyPair("alias", "password".toCharArray());
 		
-		ByteArrayInputStream bais  = new ByteArrayInputStream(data);
-		ObjectInputStream ois  = new ObjectInputStream(bais);
-		EC25519PublicKey test1 = (EC25519PublicKey) ois.readObject();
-		EC25519PrivateKey test2 = (EC25519PrivateKey) ois.readObject();
-		ois.close();
-		assertEquals(publicKey, test1);
-		assertEquals(privateKey, test2);
+		assertEquals(pair1.getPublic(), pair2.getPublic());
+		assertEquals(pair1.getPrivate(), pair2.getPrivate());
+	}
+
+	@Test
+	public void testSecretKey() throws Exception {
+		KeyStore keystore = KeyStore.instance("password".toCharArray());
+		
+		SecretKey key1= keystore.generateSecretKey("alias", "password".toCharArray(), 32, "AES");
+		SecretKey key2 = keystore.getSecretKey("alias", "password".toCharArray());
+		
+		assertEquals(key1,key2);
 	}
 }

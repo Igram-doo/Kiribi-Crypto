@@ -28,6 +28,9 @@ Signatures are crypto-graphic quantities which can be used to authenticate data.
 ##### Signed Data
 Signed data are crypto-graphic quantities which encapsulate data and a signature. The``SignedData``class provided by this module is functionally equivalent to the standard java``SignedData``class.
 
+##### Key Store
+Wrapper for a KeyStore.
+
 ### Code Example
 
 	KeyPair pair = KeyGenerator.generateKeyPair();
@@ -42,11 +45,5 @@ Signed data are crypto-graphic quantities which encapsulate data and a signature
 
 ### To Do
 * Determine minimum supported Java version.
-* Standard encodings for public and private keys.
-* Standard KeySpec classes for public and private keys.
-* Standard KeyFactory.
-* Standard KeyGenerator.
-* Standard Signature.
-* Security Provider.
-* Self-signed Certificate generation.
-* Keystore support.
+* More KeyStore unit tests.
+
