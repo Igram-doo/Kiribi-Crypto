@@ -25,6 +25,7 @@
 package rs.igram.kiribi.crypto;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 import rs.igram.kiribi.io.ByteStream;
 import rs.igram.kiribi.io.Decoder;
@@ -110,10 +111,6 @@ public class KeyExchange implements EncodedStream {
 			decrypter = Crypto.cipher();
 		}catch(ArrayIndexOutOfBoundsException e){
 			// thrown in Cypto.agreement
-			System.out.println("Key Agreement Failed: "+isProxy+" "+b.length);
-			throw new IOException("Key exchange failed", e);
-		}catch(Exception e){
-			e.printStackTrace();
 			throw new IOException("Key exchange failed", e);
 		}
 	}
@@ -145,8 +142,7 @@ public class KeyExchange implements EncodedStream {
 				byte[] buf = new byte[((M / N) * N) + (2 * N)];
 				System.arraycopy(b, 0, buf, 0, M);
 				return encrypter.encrypt(buf);
-			}catch(Exception e){
-				e.printStackTrace();
+			}catch(GeneralSecurityException e){
 				throw new IOException(e);
 			}
 		}
@@ -166,8 +162,7 @@ public class KeyExchange implements EncodedStream {
 			try{
 				decrypter.init(sk);
 				return decrypter.decrypt(b);
-			}catch(Exception e){
-				e.printStackTrace();
+			}catch(GeneralSecurityException e){
 				throw new IOException(e);
 			}
 		}

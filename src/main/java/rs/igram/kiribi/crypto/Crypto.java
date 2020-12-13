@@ -51,7 +51,7 @@ final class Crypto {
  	static {
  		Security.setProperty("crypto.policy", "unlimited");
 		try{
-			random = SecureRandom.getInstance("SHA1PRNG", "SUN"); 
+			random = SecureRandom.getInstance("SHA1PRNG"); 
 		}catch(Exception e){
 			throw new RuntimeException("Could not initialize secure random",e);
 		}
@@ -92,8 +92,8 @@ final class Crypto {
 	 */
 	public static void gen() {
 		ECKeyPair p = generateECKeyPair();
-		int[] e = rs.igram.kiribi.io.ByteUtils.ints(p.encoded);
-		for(int i = 0; i < e.length; i++) System.out.println(""+e[i]);
+		//int[] e = rs.igram.kiribi.io.ByteUtils.ints(p.encoded);
+		//for(int i = 0; i < e.length; i++) System.out.println(""+e[i]);
 		System.out.println(Base64.getEncoder().encodeToString(p.pk));
 	}
 	
