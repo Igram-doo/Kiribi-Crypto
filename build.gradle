@@ -45,3 +45,5 @@ test {
 
 group = 'rs.igram.kiribi'
 version = 'v0.1-beta'
+sourceCompatibility = 11
+targetCompatibility = 11

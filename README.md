@@ -43,7 +43,5 @@ Wrapper for a KeyStore.
 ##### Exports
 * rs.igram.kiribi.crypto
 
-### To Do
-* Determine minimum supported Java version.
-* More KeyStore unit tests.
+Java version 11
 
