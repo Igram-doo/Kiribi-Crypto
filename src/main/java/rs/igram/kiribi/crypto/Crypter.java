@@ -58,8 +58,8 @@ class Crypter {
 	 * @throws IOException text
 	 */
 	public Crypter(Path path, char[] pass) throws GeneralSecurityException, IOException {
-		byte[] secret = sha256(sha256(bytes(pass)));
-		byte[] hash = sha256(sha256(secret));
+		var secret = sha256(sha256(bytes(pass)));
+		var hash = sha256(sha256(secret));
 		
 		if(Files.exists(path)){
 			byte[] b = Files.readAllBytes(path);
@@ -71,7 +71,7 @@ class Crypter {
 		decrypter = Crypto.cipher();
 		
 		// kdf
-		byte[] key = Crypto.key(secret, v, 32);
+		var key = Crypto.key(secret, v, 32);
 		encrypter.init(key);
 		decrypter.init(key);
 	}

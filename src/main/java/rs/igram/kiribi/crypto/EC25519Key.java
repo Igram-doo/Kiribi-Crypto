@@ -86,7 +86,7 @@ abstract class EC25519PKey implements Encodable {
 	}
 		
 	private static byte[] copy(byte[] src) {
-		byte[] b = new byte[src.length];
+		var b = new byte[src.length];
 		System.arraycopy(src, 0, b, 0, src.length);
 		return b;
 	}

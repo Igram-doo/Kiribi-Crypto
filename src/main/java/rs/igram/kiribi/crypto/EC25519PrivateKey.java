@@ -105,7 +105,7 @@ public final class EC25519PrivateKey extends EC25519PKey implements PrivateKey {
 	 * @return Returns a crypto-graphic hash of the public key associated with this private key.
 	 */
 	byte[] publicKeyHash() {
-		byte[] pk = pair().pk;
+		var pk = pair().pk;
 		return ripemd160(sha256(pk));
 	}
 		
@@ -120,7 +120,7 @@ public final class EC25519PrivateKey extends EC25519PKey implements PrivateKey {
 	public boolean equals(Object o){
 		if(this == o) return true;
 		if(o != null && o.getClass() == EC25519PrivateKey.class){
-			EC25519PrivateKey k = (EC25519PrivateKey)o;
+			var k = (EC25519PrivateKey)o;
 			return Arrays.equals(material, k.material);
 		}
 		return false;

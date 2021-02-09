@@ -82,7 +82,7 @@ public final class SignedData implements Encodable {
 	 * @throws ClassCastException if the provided key is not an instance of <code>EC25519PrivateKey</code>.
 	 */
 	public static SignedData signData(byte[] data, PrivateKey key) throws IOException {
-		EC25519PrivateKey eck = (EC25519PrivateKey)key;
+		var eck = (EC25519PrivateKey)key;
 	 	return new SignedData(eck.pair(), data);
 	}
 
@@ -134,7 +134,7 @@ public final class SignedData implements Encodable {
 	public boolean equals(Object o){
 		if(this == o) return true;
 		if(o != null && o.getClass() == SignedData.class){
-			SignedData k = (SignedData)o;
+			var k = (SignedData)o;
 			return signature.equals(k.signature)
 				&& Arrays.equals(pk, k.pk)
 				&& Arrays.equals(data, k.data);

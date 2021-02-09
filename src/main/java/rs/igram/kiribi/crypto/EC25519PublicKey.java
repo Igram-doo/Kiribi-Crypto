@@ -105,7 +105,7 @@ public final class EC25519PublicKey extends EC25519PKey implements PublicKey {
 	public boolean equals(Object o){
 		if(this == o) return true;
 		if(o != null && o.getClass() == EC25519PublicKey.class){
-			EC25519PublicKey k = (EC25519PublicKey)o;
+			var k = (EC25519PublicKey)o;
 			return Arrays.equals(material, k.material);
 		}
 		return false;
@@ -119,7 +119,7 @@ public final class EC25519PublicKey extends EC25519PKey implements PublicKey {
  
     private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
        	ois.defaultReadObject();
-       	int l = ois.readInt();
+       	var l = ois.readInt();
        	material = new byte[l];
        	ois.read(material);
     }

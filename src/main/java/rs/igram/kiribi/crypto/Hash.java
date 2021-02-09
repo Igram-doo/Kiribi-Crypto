@@ -58,8 +58,8 @@ abstract class Hash {
 	 * @return The hash of the byte array.
 	 */
     public static final byte[] ripemd160(byte[] data) {
-    	byte[] sha256 = sha256(data);
-    	byte[] result = new byte[20];
+    	var sha256 = sha256(data);
+    	var result = new byte[20];
     	System.arraycopy(sha256, 0, result, 0, 20);
     	return result;
 //       	return hash(new RIPEMD160Digest(), data);

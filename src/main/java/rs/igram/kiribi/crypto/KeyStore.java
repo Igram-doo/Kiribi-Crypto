@@ -63,7 +63,7 @@ public final class KeyStore {
 	 */  	
 	public static KeyStore instance(char[] password) {
 		try {
-			java.security.KeyStore delegate = Crypto.getKeyStoreInstance(password);
+			var delegate = Crypto.getKeyStoreInstance(password);
 			return new KeyStore(delegate);
 		} catch(KeyStoreException e) {
 			// shouldn't happen
@@ -83,7 +83,7 @@ public final class KeyStore {
 	 * @see store
 	 */  	
 	public static KeyStore load​(InputStream stream, char[] password) throws IOException, KeyStoreException {
-		KeyStore keystore = instance(password);
+		var keystore = instance(password);
 		try {
 			keystore.delegate.load​(stream, password);
 			return keystore;

@@ -95,7 +95,7 @@ public class KeyExchange implements EncodedStream {
 	 * <code>VarInputStream</code> during the key exchange.
 	 */
 	public void exchange() throws IOException {
-		ECKeyPair pair = Crypto.generateECKeyPair();
+		var pair = Crypto.generateECKeyPair();
 
 		byte[] b;
 		if(isProxy){
@@ -120,7 +120,7 @@ public class KeyExchange implements EncodedStream {
 	}
 
 	private void writeKey(ECKeyPair pair) throws IOException {
-		byte[] b = pair.pk;
+		var b = pair.pk;
 		stream.write(b);
 	}
 	
@@ -137,9 +137,9 @@ public class KeyExchange implements EncodedStream {
 		synchronized(encrypter) {
 			try{
 				encrypter.init(sk);
-				int M = b.length;
-				int N = encrypter.getBlockSize();
-				byte[] buf = new byte[((M / N) * N) + (2 * N)];
+				var M = b.length;
+				var N = encrypter.getBlockSize();
+				var buf = new byte[((M / N) * N) + (2 * N)];
 				System.arraycopy(b, 0, buf, 0, M);
 				return encrypter.encrypt(buf);
 			}catch(GeneralSecurityException e){
@@ -178,7 +178,7 @@ public class KeyExchange implements EncodedStream {
 	@Override
 	public void write(Encodable data) throws IOException {
 		if (encrypter == null) throw new IllegalStateException("Key exchange not complete");
-		byte[] b = encrypt(data.encode());
+		var b = encrypt(data.encode());
 		stream.write(b);
 	}
 
@@ -193,7 +193,7 @@ public class KeyExchange implements EncodedStream {
 	@Override
 	public <T> T read(Decoder<T> decoder) throws IOException {
 		if (decrypter == null) throw new IllegalStateException("Key exchange not complete");
-		byte[] b = stream.read();
+		var b = stream.read();
 		return decoder.decode(decrypt(b));
 	}
 }

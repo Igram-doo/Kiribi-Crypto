@@ -79,7 +79,7 @@ final class Curve25519Provider extends Crypto.CryptoSpi {
 	@Override
 	java.security.KeyStore getKeyStoreInstance(char[] password) throws KeyStoreException {
 		try {
-			java.security.KeyStore keystore = java.security.KeyStore.getInstance("JCEKS");
+			var keystore = java.security.KeyStore.getInstance("JCEKS");
 			keystore.load(null, password);
 			return keystore;
 		} catch(IOException e) {
@@ -94,22 +94,22 @@ final class Curve25519Provider extends Crypto.CryptoSpi {
 		
 	@Override
 	KeyPair generateKeyPair​(java.security.KeyStore keystore, String alias, char[] password) throws KeyStoreException {
-		ECKeyPair pair = generateECKeyPair();
+		var pair = generateECKeyPair();
 		put(pair.encoded, alias, password, keystore);
 		return pair.toEC25519KeyPair();
 	}
 		
 	@Override
 	KeyPair getKeyPair​(java.security.KeyStore keystore, String alias, char[] password) throws KeyStoreException {
-		EC25519PrivateKey key = get(alias, password, keystore);
+		var key = get(alias, password, keystore);
 		return key == null ? null :  key.generateKeyPair();
 	}
 	
 	@Override
 	SecretKey generateSecretKey​(java.security.KeyStore keystore, String alias, char[] password, int size, String algorthim) throws KeyStoreException {
-		byte[] b = new byte[size];
+		var b = new byte[size];
 		Crypto.random(b);
-		SecretKeySpec spec = new SecretKeySpec(b, algorthim);		
+		var spec = new SecretKeySpec(b, algorthim);		
 		keystore.setEntry(alias, new SecretKeyEntry(spec), new PasswordProtection(password));
 		return spec;
 	}
@@ -117,7 +117,7 @@ final class Curve25519Provider extends Crypto.CryptoSpi {
 	@Override
 	SecretKey getSecretKey​(java.security.KeyStore keystore, String alias, char[] password) throws KeyStoreException {
 		try {
-			SecretKeyEntry entry = (SecretKeyEntry)keystore.getEntry(alias, new PasswordProtection(password));
+			var entry = (SecretKeyEntry)keystore.getEntry(alias, new PasswordProtection(password));
 			return entry == null ? null : 
 				(entry.getSecretKey().getAlgorithm().equals("25519") ? 
 					null  :
@@ -130,13 +130,13 @@ final class Curve25519Provider extends Crypto.CryptoSpi {
 	}
 
 	private void put(byte[] key, String alias, char[] pw, java.security.KeyStore keystore) throws KeyStoreException {
-		SecretKeySpec spec = new SecretKeySpec(key, "25519");		
+		var spec = new SecretKeySpec(key, "25519");		
 		keystore.setEntry(alias, new SecretKeyEntry(spec), new PasswordProtection(pw));	
 	}
 
 	private EC25519PrivateKey get(String alias, char[] pw, java.security.KeyStore keystore) throws KeyStoreException {
 		try {
-			SecretKeyEntry entry = (SecretKeyEntry)keystore.getEntry(alias, new PasswordProtection(pw));
+			var entry = (SecretKeyEntry)keystore.getEntry(alias, new PasswordProtection(pw));
 			return entry == null ? null : 
 				(entry.getSecretKey().getAlgorithm().equals("25519") ? 
 					new EC25519PrivateKey(entry.getSecretKey().getEncoded()) :
@@ -150,7 +150,7 @@ final class Curve25519Provider extends Crypto.CryptoSpi {
 
 	@Override
 	ECKeyPair generateECKeyPair() {
-		byte[] encoded = new byte[32];
+		var encoded = new byte[32];
 		Crypto.random(encoded);
 		encoded = sha256(encoded);
 		
@@ -159,9 +159,9 @@ final class Curve25519Provider extends Crypto.CryptoSpi {
 	
 	@Override
 	ECKeyPair generateECKeyPair(byte[] encoded) {
-		byte[] p = new byte[32];
-		byte[] s = new byte[32];
-		byte[] k = new byte[32];
+		var p = new byte[32];
+		var s = new byte[32];
+		var k = new byte[32];
 		System.arraycopy(encoded, 0, k, 0, 32);
 		Curve25519.keygen(p, s, k);
 		
@@ -170,7 +170,7 @@ final class Curve25519Provider extends Crypto.CryptoSpi {
 
 	@Override
 	byte[] agreement(ECKeyPair pair, byte[] key) {
-		byte[] z = new byte[32];
+		var z = new byte[32];
 		Curve25519.curve(z, ((Pair)pair).k, key);
 		
 		return key(z, v, 32);
@@ -178,18 +178,18 @@ final class Curve25519Provider extends Crypto.CryptoSpi {
 	
 	@Override
 	Signature sign(ECKeyPair pair, byte[] data) {
-		Pair p = (Pair)pair;
-		byte[] s = p.s;
-		byte[] P = p.pk;
-		byte[] Z = P;
+		var p = (Pair)pair;
+		var s = p.s;
+		var P = p.pk;
+		var Z = P;
 		
-		byte[] m = sha256(concat(P, data));
-		byte[] x = sha256(concat(m, s));
-		byte[] Y = new byte[32];
+		var m = sha256(concat(P, data));
+		var x = sha256(concat(m, s));
+		var Y = new byte[32];
 		Curve25519.keygen(Y, null, x);
-		byte[] r = sha256(Y);
-		byte[] h = xor(m, r, 32);
-		byte[] v = new byte[32];
+		var r = sha256(Y);
+		var h = xor(m, r, 32);
+		var v = new byte[32];
 		Curve25519.sign(v, h, x, s);
 		
 		return new Signature(concat(v, r));
@@ -197,12 +197,12 @@ final class Curve25519Provider extends Crypto.CryptoSpi {
 	
 	@Override
 	boolean verify(Signature sig, byte[] data, byte[] pk) {
-		byte[] v = extract(sig.data, 0, 32);
-		byte[] r = extract(sig.data, 32, 32);
+		var v = extract(sig.data, 0, 32);
+		var r = extract(sig.data, 32, 32);
 		
-		byte[] m = sha256(concat(pk, data));
-		byte[] h = xor(m, r, 32);
-		byte[] Y = new byte[32];
+		var m = sha256(concat(pk, data));
+		var h = xor(m, r, 32);
+		var Y = new byte[32];
 		Curve25519.verify(Y, v, h, pk);
 		
 		return Arrays.equals(r, sha256(Y));
@@ -232,7 +232,7 @@ final class Curve25519Provider extends Crypto.CryptoSpi {
 		
 		@Override
 		void init(byte[] key) {
-			byte[] sk = crop(key, AES_KEY_SIZE);
+			var sk = crop(key, AES_KEY_SIZE);
 			spec = new SecretKeySpec(sk, AES);
 		}
 		
@@ -244,12 +244,12 @@ final class Curve25519Provider extends Crypto.CryptoSpi {
 		@Override
 		byte[] encrypt(byte[] b) throws GeneralSecurityException {		
 			try{
-				byte[] nonce = new byte[LEN_NONCE];
+				var nonce = new byte[LEN_NONCE];
 				secureRandom.nextBytes(nonce);
 				cipher.init(ENCRYPT_MODE, spec, new GCMParameterSpec(LEN_TAG, nonce));
-				byte[] encrypted = cipher.doFinal(b);
+				var encrypted = cipher.doFinal(b);
 
-				ByteBuffer byteBuffer = ByteBuffer.allocate(LEN_NONCE + encrypted.length);
+				var byteBuffer = ByteBuffer.allocate(LEN_NONCE + encrypted.length);
 				byteBuffer.put(nonce);
 				byteBuffer.put(encrypted);
 
@@ -262,13 +262,13 @@ final class Curve25519Provider extends Crypto.CryptoSpi {
 		@Override
 		byte[] decrypt(byte[] b) throws GeneralSecurityException {		
 			try {
-				ByteBuffer byteBuffer = ByteBuffer.wrap(b);
-				byte[] nonce = new byte[LEN_NONCE];
+				var byteBuffer = ByteBuffer.wrap(b);
+				var nonce = new byte[LEN_NONCE];
 				byteBuffer.get(nonce);
-				byte[] encrypted = new byte[b.length - LEN_NONCE];
+				var encrypted = new byte[b.length - LEN_NONCE];
 				byteBuffer.get(encrypted);
 				cipher.init(DECRYPT_MODE, spec, new GCMParameterSpec(LEN_TAG, nonce));
-				byte[] decrypted = cipher.doFinal(encrypted);
+				var decrypted = cipher.doFinal(encrypted);
 				return decrypted;
 			} catch (Exception e) {
 				throw new GeneralSecurityException("Decryption failed", e);

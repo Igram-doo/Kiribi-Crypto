@@ -24,26 +24,10 @@
  
 package rs.igram.kiribi.crypto;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.IOException;
-import java.io.Serializable;
 import java.security.KeyPair;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.cert.Certificate;
-import java.util.Arrays;
-import javax.crypto.SecretKey;
-
-import rs.igram.kiribi.io.Encodable;
-import rs.igram.kiribi.io.VarInput;
-import rs.igram.kiribi.io.VarOutput;
-import java.util.Base64;
 
 import static rs.igram.kiribi.crypto.Crypto.ECKeyPair;
 import static rs.igram.kiribi.crypto.Crypto.generateECKeyPair;
-import static rs.igram.kiribi.crypto.Hash.ripemd160;
-import static rs.igram.kiribi.crypto.Hash.sha256;
 
 /**
  * Provides a generator for EC 25519  key pairs.

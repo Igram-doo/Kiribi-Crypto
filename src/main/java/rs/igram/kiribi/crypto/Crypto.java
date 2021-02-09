@@ -91,9 +91,7 @@ final class Crypto {
 	 * Reads a byte array from the stream.
 	 */
 	public static void gen() {
-		ECKeyPair p = generateECKeyPair();
-		//int[] e = rs.igram.kiribi.io.ByteUtils.ints(p.encoded);
-		//for(int i = 0; i < e.length; i++) System.out.println(""+e[i]);
+		var p = generateECKeyPair();
 		System.out.println(Base64.getEncoder().encodeToString(p.pk));
 	}
 	
@@ -181,7 +179,7 @@ final class Crypto {
 		abstract SecretKey getSecretKey​(java.security.KeyStore keystore, String alias, char[] password) throws KeyStoreException;
 		
 		final byte[] key(byte[] secret, byte[]  iv, int len) {
-			byte[] tmp = concat(secret, iv);
+			var tmp = concat(secret, iv);
 			tmp = sha256(sha256(tmp));
 		
 			return crop(tmp, len);
