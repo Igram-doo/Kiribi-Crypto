@@ -48,23 +48,23 @@ public class KeyTest {
 
 	@Test
 	public void testSerializable() throws Exception {
-		KeyPair pair = KeyPairGenerator.generateKeyPair();
-		EC25519PublicKey publicKey = (EC25519PublicKey)pair.getPublic();
-		EC25519PrivateKey privateKey = (EC25519PrivateKey)pair.getPrivate();
+		var pair = KeyPairGenerator.generateKeyPair();
+		var publicKey = (EC25519PublicKey)pair.getPublic();
+		var privateKey = (EC25519PrivateKey)pair.getPrivate();
 		
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ObjectOutputStream oos = new ObjectOutputStream(baos);
+		var baos = new ByteArrayOutputStream();
+		var oos = new ObjectOutputStream(baos);
 		oos.writeObject(publicKey);
 		oos.writeObject(privateKey);
 		oos.flush();
 		oos.close();
  
-		byte[] data = baos.toByteArray();
+		var data = baos.toByteArray();
 		
-		ByteArrayInputStream bais  = new ByteArrayInputStream(data);
-		ObjectInputStream ois  = new ObjectInputStream(bais);
-		EC25519PublicKey test1 = (EC25519PublicKey) ois.readObject();
-		EC25519PrivateKey test2 = (EC25519PrivateKey) ois.readObject();
+		var bais  = new ByteArrayInputStream(data);
+		var ois  = new ObjectInputStream(bais);
+		var test1 = (EC25519PublicKey) ois.readObject();
+		var test2 = (EC25519PrivateKey) ois.readObject();
 		ois.close();
 		assertEquals(publicKey, test1);
 		assertEquals(privateKey, test2);

@@ -42,21 +42,21 @@ public class SignatureTest {
 
 	@Test
 	public void testVerify() throws IOException {
-		byte[] b1 = new byte[1000];
+		var b1 = new byte[1000];
 		random(b1);
-		byte[] b2 = new byte[1000];
+		var b2 = new byte[1000];
 		random(b2);
 		
-		KeyPair pair1 = KeyPairGenerator.generateKeyPair();
-		EC25519PublicKey publicKey1 = (EC25519PublicKey)pair1.getPublic();
-		EC25519PrivateKey privateKey1 = (EC25519PrivateKey)pair1.getPrivate();
+		var pair1 = KeyPairGenerator.generateKeyPair();
+		var publicKey1 = (EC25519PublicKey)pair1.getPublic();
+		var privateKey1 = (EC25519PrivateKey)pair1.getPrivate();
 		
-		KeyPair pair2 = KeyPairGenerator.generateKeyPair();
-		EC25519PublicKey publicKey2 = (EC25519PublicKey)pair2.getPublic();
-		EC25519PrivateKey privateKey2 = (EC25519PrivateKey)pair2.getPrivate();
+		var pair2 = KeyPairGenerator.generateKeyPair();
+		var publicKey2 = (EC25519PublicKey)pair2.getPublic();
+		var privateKey2 = (EC25519PrivateKey)pair2.getPrivate();
 		
-		Signature s1 = Signature.sign(b1, privateKey1);
-		Signature s2 = Signature.sign(b2, privateKey2);
+		var s1 = Signature.sign(b1, privateKey1);
+		var s2 = Signature.sign(b2, privateKey2);
 		assertTrue(s1.verify(b1, publicKey1));
 		assertFalse(s1.verify(b1, publicKey2));
 

@@ -53,11 +53,11 @@ public class SignedDataTest {
 
 	@Test
 	public void testVerify() throws IOException {
-		TestEncodable t = new TestEncodable();	
-		KeyPair pair = KeyPairGenerator.generateKeyPair();
-		EC25519PublicKey publicKey = (EC25519PublicKey)pair.getPublic();
-		EC25519PrivateKey privateKey = (EC25519PrivateKey)pair.getPrivate();
-		SignedData s = SignedData.signData(t.encode(), privateKey);
+		var t = new TestEncodable();	
+		var pair = KeyPairGenerator.generateKeyPair();
+		var publicKey = (EC25519PublicKey)pair.getPublic();
+		var privateKey = (EC25519PrivateKey)pair.getPrivate();
+		var s = SignedData.signData(t.encode(), privateKey);
 		assertTrue(s.verify(publicKey));
 		
    }
@@ -90,7 +90,7 @@ public class SignedDataTest {
    	   @Override
    	   public boolean equals(Object o) {
    	   	   if(o == null || !(o instanceof TestEncodable)) return false;
-   	   	   TestEncodable t = (TestEncodable)o;
+   	   	   var t = (TestEncodable)o;
    	   	   return l == t.l && Arrays.equals(b, t.b);
    	   }
    }

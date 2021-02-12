@@ -48,11 +48,11 @@ public class KeyStoreTest {
 
 	@Test
 	public void testKeyPair() throws Exception {
-		KeyPair pair = KeyPairGenerator.generateKeyPair();
-		KeyStore keystore = KeyStore.instance("password".toCharArray());
+		var pair = KeyPairGenerator.generateKeyPair();
+		var keystore = KeyStore.instance("password".toCharArray());
 		
-		KeyPair pair1 = keystore.generateKeyPair("alias", "password".toCharArray());
-		KeyPair pair2 = keystore.getKeyPair("alias", "password".toCharArray());
+		var pair1 = keystore.generateKeyPair("alias", "password".toCharArray());
+		var pair2 = keystore.getKeyPair("alias", "password".toCharArray());
 		
 		assertEquals(pair1.getPublic(), pair2.getPublic());
 		assertEquals(pair1.getPrivate(), pair2.getPrivate());
@@ -60,10 +60,10 @@ public class KeyStoreTest {
 
 	@Test
 	public void testSecretKey() throws Exception {
-		KeyStore keystore = KeyStore.instance("password".toCharArray());
+		var keystore = KeyStore.instance("password".toCharArray());
 		
-		SecretKey key1= keystore.generateSecretKey("alias", "password".toCharArray(), 32, "AES");
-		SecretKey key2 = keystore.getSecretKey("alias", "password".toCharArray());
+		var key1= keystore.generateSecretKey("alias", "password".toCharArray(), 32, "AES");
+		var key2 = keystore.getSecretKey("alias", "password".toCharArray());
 		
 		assertEquals(key1,key2);
 	}

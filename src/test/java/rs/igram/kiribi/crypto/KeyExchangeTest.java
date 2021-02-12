@@ -61,26 +61,26 @@ public class KeyExchangeTest {
 
    @Test
    public void testKeyExchange() throws IOException, InterruptedException {
-   	   PipedInputStream pi1 = new PipedInputStream();
-   	   VarInputStream i1 = new VarInputStream(pi1);
-   	   PipedInputStream pi2 = new PipedInputStream();
-   	   VarInputStream i2 = new VarInputStream(pi2);
-   	   PipedOutputStream po1 = new PipedOutputStream();
-   	   VarOutputStream o1 = new VarOutputStream(po1);
-   	   PipedOutputStream po2 = new PipedOutputStream();
-       VarOutputStream o2 = new VarOutputStream(po2);
+   	   var pi1 = new PipedInputStream();
+   	   var i1 = new VarInputStream(pi1);
+   	   var pi2 = new PipedInputStream();
+   	   var i2 = new VarInputStream(pi2);
+   	   var po1 = new PipedOutputStream();
+   	   var o1 = new VarOutputStream(po1);
+   	   var po2 = new PipedOutputStream();
+       var o2 = new VarOutputStream(po2);
        
        pi1.connect(po1);
        pi2.connect(po2);
        
-       KeyExchange e1 = new KeyExchange(false, ByteStream.stream(i1, o2));
-       KeyExchange e2 = new KeyExchange(ByteStream.stream(i2, o1));
+       var e1 = new KeyExchange(false, ByteStream.stream(i1, o2));
+       var e2 = new KeyExchange(ByteStream.stream(i2, o1));
        
-       TestEncodable test = new TestEncodable();
-       TestEncodable[] result = new TestEncodable[1];
-       IOException[] e = new IOException[1];
+       var test = new TestEncodable();
+       var result = new TestEncodable[1];
+       var e = new IOException[1];
        
-       Thread t1 = new Thread(() -> { 
+       var t1 = new Thread(() -> { 
        	   try {
        	   	   e1.exchange();
        	   	   e1.write(test);
@@ -89,7 +89,7 @@ public class KeyExchangeTest {
        	   }
        });
        
-       Thread t2 = new Thread(() -> {
+       var t2 = new Thread(() -> {
        	   try {
        	   	   e2.exchange();
        	   	   result[0] = e2.read(TestEncodable::new);
@@ -136,7 +136,7 @@ public class KeyExchangeTest {
    	   @Override
    	   public boolean equals(Object o) {
    	   	   if(o == null || !(o instanceof TestEncodable)) return false;
-   	   	   TestEncodable t = (TestEncodable)o;
+   	   	   var t = (TestEncodable)o;
    	   	   return l == t.l && Arrays.equals(b, t.b);
    	   }
    }
